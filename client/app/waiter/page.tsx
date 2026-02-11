@@ -275,16 +275,27 @@ export default function WaiterDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">🍽️ Waiter Dashboard</h1>
+      <header className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+              <span className="text-xl">🍽️</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900">Waiter Dashboard</h1>
+              <p className="text-xs text-slate-500">Manage orders and tables</p>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">{user.username}</span>
+            <div className="text-right">
+              <p className="text-sm font-medium text-slate-900">{user.username}</p>
+              <p className="text-xs text-slate-500 capitalize">{user.role}</p>
+            </div>
             <button
               onClick={logout}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
+              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition border border-slate-200"
             >
               Logout
             </button>
@@ -293,20 +304,23 @@ export default function WaiterDashboard() {
       </header>
 
       {/* Tabs */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-4">
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex gap-1">
             {['tables', 'orders', 'menu', 'settings'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 font-medium capitalize border-b-2 transition ${
+                className={`px-6 py-4 font-semibold capitalize transition relative ${
                   activeTab === tab
-                    ? 'border-indigo-600 text-indigo-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                    ? 'text-slate-900'
+                    : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
                 {tab}
+                {activeTab === tab && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900" />
+                )}
               </button>
             ))}
           </div>
@@ -318,41 +332,45 @@ export default function WaiterDashboard() {
         {/* Tables Tab */}
         {activeTab === 'tables' && (
           <div>
-            <h2 className="text-xl font-semibold mb-4">Table Status</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Table Status</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {tables.map(table => (
                 <div
                   key={table.id}
-                  className={`p-6 rounded-lg shadow-sm border-2 ${
+                  className={`p-6 rounded-2xl border-2 transition-all ${
                     table.status === 'available'
-                      ? 'bg-green-50 border-green-200'
-                      : 'bg-red-50 border-red-200'
+                      ? 'bg-white border-emerald-200 hover:border-emerald-300'
+                      : 'bg-slate-50 border-slate-300'
                   }`}
                 >
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-800 mb-2">
+                    <div className="text-4xl font-bold text-slate-900 mb-3">
                       {table.table_number}
                     </div>
-                    <div className={`text-sm font-medium mb-3 capitalize ${
-                      table.status === 'available' ? 'text-green-700' : 'text-red-700'
+                    <div className={`text-xs font-bold uppercase tracking-wide mb-4 px-3 py-1 rounded-full inline-block ${
+                      table.status === 'available' 
+                        ? 'bg-emerald-100 text-emerald-700' 
+                        : 'bg-slate-200 text-slate-700'
                     }`}>
                       {table.status}
                     </div>
-                    {table.status === 'available' ? (
-                      <button
-                        onClick={() => openOrderModal(table.id, table.table_number)}
-                        className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition"
-                      >
-                        New Order
-                      </button>
-                    ) : table.active_order_id ? (
-                      <button
-                        onClick={() => viewBill(table.active_order_id!)}
-                        className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition"
-                      >
-                        View Bill
-                      </button>
-                    ) : null}
+                    <div className="mt-4">
+                      {table.status === 'available' ? (
+                        <button
+                          onClick={() => openOrderModal(table.id, table.table_number)}
+                          className="w-full px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl text-sm transition"
+                        >
+                          New Order
+                        </button>
+                      ) : table.active_order_id ? (
+                        <button
+                          onClick={() => viewBill(table.active_order_id!)}
+                          className="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm transition"
+                        >
+                          View Bill
+                        </button>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               ))}

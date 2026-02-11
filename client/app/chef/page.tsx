@@ -115,36 +115,33 @@ export default function ChefDashboard() {
   };
 
   const OrderCard = ({ order, showButton, buttonText, buttonColor, onButtonClick }: any) => (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-      <div className="flex justify-between items-start mb-3">
-        <h3 className="text-lg font-bold">Table {order.table_number}</h3>
-        <span className="text-sm text-gray-500">{getTimeAgo(order.created_at)}</span>
+    <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-lg font-bold text-slate-900">Table {order.table_number}</h3>
+        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">{getTimeAgo(order.created_at)}</span>
       </div>
 
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2.5 mb-4">
         {order.items.map((item: OrderItem) => (
           <div
             key={item.id}
-            className="p-2 bg-gray-50 rounded border-l-4 border-indigo-500"
+            className="p-3 bg-slate-50 rounded-xl border border-slate-200"
           >
             <div className="flex justify-between items-start">
-              <div>
-                <strong>{item.item_name}</strong>
-                <div className="text-sm text-gray-600">
-                  <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs mr-2">
+              <div className="flex-1">
+                <p className="font-semibold text-slate-900 mb-1">{item.item_name}</p>
+                <div className="flex gap-2">
+                  <span className="inline-block px-2 py-1 bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">
                     {item.portion}
                   </span>
-                  <span className="inline-block px-2 py-0.5 bg-green-100 text-green-800 rounded text-xs">
-                    x{item.quantity}
+                  <span className="inline-block px-2 py-1 bg-slate-900 text-white rounded-lg text-xs font-medium">
+                    ×{item.quantity}
                   </span>
                 </div>
                 {item.notes && (
-                  <div className="text-xs text-gray-500 mt-1">Note: {item.notes}</div>
+                  <div className="text-xs text-slate-600 mt-2 italic">Note: {item.notes}</div>
                 )}
               </div>
-              <span className="text-xs px-2 py-1 bg-gray-200 rounded capitalize">
-                {item.status}
-              </span>
             </div>
           </div>
         ))}
@@ -153,7 +150,7 @@ export default function ChefDashboard() {
       {showButton && (
         <button
           onClick={() => onButtonClick(order.id)}
-          className={`w-full py-2 rounded-lg font-semibold text-white transition ${buttonColor}`}
+          className={`w-full py-3 rounded-xl font-semibold text-white transition shadow-sm hover:shadow ${buttonColor}`}
         >
           {buttonText}
         </button>
@@ -170,16 +167,27 @@ export default function ChefDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">👨‍🍳 Chef Dashboard</h1>
+      <header className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+              <span className="text-xl">👨‍🍳</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900">Chef Dashboard</h1>
+              <p className="text-xs text-slate-500">Kitchen order management</p>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">{user.username}</span>
+            <div className="text-right">
+              <p className="text-sm font-medium text-slate-900">{user.username}</p>
+              <p className="text-xs text-slate-500 capitalize">{user.role}</p>
+            </div>
             <button
               onClick={logout}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
+              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition border border-slate-200"
             >
               Logout
             </button>
@@ -192,12 +200,13 @@ export default function ChefDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Pending Orders */}
           <div>
-            <div className="bg-yellow-100 rounded-t-lg px-4 py-3 border-b-2 border-yellow-300">
-              <h2 className="text-lg font-bold text-yellow-800">
-                Pending Orders ({pendingOrders.length})
+            <div className="bg-white border-2 border-amber-200 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-2 bg-amber-400 rounded-full"></span>
+                Pending ({pendingOrders.length})
               </h2>
             </div>
-            <div className="bg-yellow-50 p-4 rounded-b-lg min-h-[400px]">
+            <div className="bg-amber-50/30 border-2 border-t-0 border-amber-200 p-4 rounded-b-2xl min-h-[400px]">
               {pendingOrders.length === 0 ? (
                 <p className="text-center text-gray-500 py-8">No pending orders</p>
               ) : (
@@ -217,14 +226,15 @@ export default function ChefDashboard() {
 
           {/* Preparing Orders */}
           <div>
-            <div className="bg-blue-100 rounded-t-lg px-4 py-3 border-b-2 border-blue-300">
-              <h2 className="text-lg font-bold text-blue-800">
+            <div className="bg-white border-2 border-sky-200 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></span>
                 Preparing ({preparingOrders.length})
               </h2>
             </div>
-            <div className="bg-blue-50 p-4 rounded-b-lg min-h-[400px]">
+            <div className="bg-sky-50/30 border-2 border-t-0 border-sky-200 p-4 rounded-b-2xl min-h-[400px]">
               {preparingOrders.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No orders in preparation</p>
+                <p className="text-center text-slate-500 py-8 text-sm">No orders in preparation</p>
               ) : (
                 preparingOrders.map(order => (
                   <OrderCard
@@ -232,7 +242,7 @@ export default function ChefDashboard() {
                     order={order}
                     showButton={true}
                     buttonText="Mark Ready"
-                    buttonColor="bg-green-600 hover:bg-green-700"
+                    buttonColor="bg-emerald-600 hover:bg-emerald-700"
                     onButtonClick={(id: number) => updateOrderStatus(id, 'ready')}
                   />
                 ))
@@ -242,12 +252,13 @@ export default function ChefDashboard() {
 
           {/* Ready Orders */}
           <div>
-            <div className="bg-green-100 rounded-t-lg px-4 py-3 border-b-2 border-green-300">
-              <h2 className="text-lg font-bold text-green-800">
-                Ready to Serve ({readyOrders.length})
+            <div className="bg-white border-2 border-emerald-200 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                Ready ({readyOrders.length})
               </h2>
             </div>
-            <div className="bg-green-50 p-4 rounded-b-lg min-h-[400px]">
+            <div className="bg-emerald-50/30 border-2 border-t-0 border-emerald-200 p-4 rounded-b-2xl min-h-[400px]">
               {readyOrders.length === 0 ? (
                 <p className="text-center text-gray-500 py-8">No orders ready</p>
               ) : (

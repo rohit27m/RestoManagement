@@ -1,181 +1,462 @@
-# Restaurant Order Management System
+<div align="center">
 
-A full-featured restaurant order management application with separate interfaces for waiters and chefs.
+# 🍽️ Restaurant Management System
 
-## Features
+### *Modern, Professional & Efficient*
 
-✅ **User Authentication**
-- Waiter login
-- Chef login
-- Admin access
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/Express-4.18-green?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
 
-✅ **Table Management**
-- 10 tables by default
-- Real-time table status (available/occupied)
-- Visual table grid
+*A full-stack restaurant management solution with modern UI/UX*
 
-✅ **Order Management**
-- Create orders for each table
-- Add multiple items with half/full portions
-- Track order status (pending → preparing → ready → served → completed)
-- Real-time order updates
+[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [📖 Documentation](#-documentation) • [🤝 Contributing](#-contributing)
 
-✅ **Menu System**
-- Add/delete menu items
-- Categorize items (Starters, Main Course, Desserts, etc.)
-- Half and full portion pricing
-- Menu availability control
+---
 
-✅ **Bill Generation**
-- Professional bill format with restaurant details
-- Itemized billing
-- Tax calculation
-- Printable bills
+</div>
 
-✅ **Chef Dashboard**
-- View pending orders
-- Track orders being prepared
-- Mark orders as ready
-- Kanban-style order board
+## 📋 Overview
 
-## Installation
+A comprehensive restaurant management system built with **Next.js** and **Express.js**, featuring separate dashboards for waiters and chefs. Designed with a clean, minimal UI using professional color schemes for the best user experience.
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+<div align="center">
 
-2. **Start the Server**
-   ```bash
-   npm start
-   ```
+### 🎯 Core Capabilities
 
-3. **Access the Application**
-   Open your browser and go to: `http://localhost:3000`
+| Waiters | Chefs | Admins |
+|:-------:|:-----:|:------:|
+| 📊 Table Management | 👨‍🍳 Kitchen Dashboard | ⚙️ System Settings |
+| 🍴 Order Creation | 📋 Order Queue | 🍽️ Menu Management |
+| 💰 Bill Generation | ⏱️ Real-time Updates | 📈 Restaurant Config |
 
-## Default Login Credentials
+</div>
 
-| Role   | Username | Password   |
-|--------|----------|------------|
-| Admin  | admin    | admin123   |
-| Waiter | waiter1  | waiter123  |
-| Chef   | chef1    | chef123    |
+---
 
-## Usage
+## ✨ Features
 
-### For Waiters:
-1. Login with waiter credentials
-2. View table status on the dashboard
-3. Click on an available table to create a new order
-4. Select menu items (half/full portions)
-5. Submit the order - it goes to the kitchen
-6. Generate and print bills
-7. Complete orders to free up tables
+<table>
+<tr>
+<td width="50%">
 
-### For Chefs:
-1. Login with chef credentials
-2. View all incoming orders in the "Pending" column
-3. Click "Start Preparing" to move orders to "Preparing"
-4. Click "Mark Ready" when the order is complete
-5. Orders automatically move between columns
+### 🔐 **Authentication System**
+- Secure login with bcrypt hashing
+- Session-based authentication
+- Role-based access control
+- Multi-user support
 
-### For Admins:
-- Access restaurant settings
-- Manage menu items
-- Update restaurant information
-- Set tax rates
+### 📊 **Table Management**
+- Visual table grid interface
+- Real-time status updates
+- 10 tables (configurable)
+- Color-coded availability
 
-## Technology Stack
+</td>
+<td width="50%">
 
-- **Backend**: Node.js + Express
-- **Database**: SQLite (better-sqlite3)
-- **Frontend**: Vanilla JavaScript, HTML, CSS
-- **Authentication**: Express-session + bcrypt
+### 🍽️ **Order Processing**
+- Intuitive order creation
+- Half/full portion options
+- Order status tracking
+- Kitchen workflow management
 
-## Project Structure
+### 💳 **Billing System**
+- Professional bill format
+- Automatic tax calculation
+- Print-ready invoices
+- Itemized receipts
 
-```
-restaurant-order-management/
-├── server.js              # Main server file
-├── package.json           # Dependencies
-├── restaurant.db          # SQLite database (auto-created)
-└── public/
-    ├── login.html         # Login page
-    ├── waiter.html        # Waiter dashboard
-    ├── waiter.js          # Waiter functionality
-    ├── chef.html          # Chef dashboard
-    ├── chef.js            # Chef functionality
-    └── styles.css         # All styles
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+```bash
+Node.js v18+  |  MySQL 8+  |  npm
 ```
 
-## Database Schema
+### Installation
 
-- **users**: User authentication (waiter, chef, admin)
-- **restaurant_info**: Restaurant details, tax rates
-- **menu_items**: Menu with categories and pricing
-- **tables**: Table numbers and status
-- **orders**: Order header with status tracking
-- **order_items**: Individual items in each order
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/rohit27m/RestoManagement.git
+cd RestoManagement
 
-## API Endpoints
+# 2️⃣ Install backend dependencies
+npm install
 
-### Authentication
-- `POST /api/login` - User login
-- `POST /api/logout` - User logout
-- `GET /api/session` - Check current session
+# 3️⃣ Install frontend dependencies
+cd client
+npm install
+cd ..
 
-### Orders
-- `POST /api/orders` - Create new order
-- `GET /api/orders` - Get all orders
-- `GET /api/orders/:id` - Get specific order
-- `PATCH /api/orders/:id/status` - Update order status
+# 4️⃣ Setup MySQL database
+mysql -u root -p restaurant_management < database.sql
 
-### Menu
-- `GET /api/menu` - Get all menu items
-- `POST /api/menu` - Add menu item
-- `PUT /api/menu/:id` - Update menu item
-- `DELETE /api/menu/:id` - Delete menu item
+# 5️⃣ Start backend server (Port 4000)
+node server.js
+
+# 6️⃣ Start frontend (Port 3000) - In new terminal
+cd client
+npm run dev
+```
+
+### 🌐 Access Application
+
+```
+Frontend: http://localhost:3000
+Backend API: http://localhost:4000
+```
+
+---
+
+## 🔑 Demo Credentials
+
+<div align="center">
+
+| 👤 Role | 🆔 Username | 🔒 Password |
+|:-------:|:-----------:|:-----------:|
+| 👨‍💼 **Admin** | `admin` | `admin123` |
+| 🧑‍💼 **Waiter** | `waiter1` | `waiter123` |
+| 👨‍🍳 **Chef** | `chef1` | `chef123` |
+
+</div>
+
+---
+
+## 📱 User Guides
+
+<details>
+<summary><b>🧑‍💼 For Waiters</b></summary>
+
+### Table Management
+1. 🔐 Login with waiter credentials
+2. 👁️ View real-time table status on dashboard
+3. ✅ Click available (green) tables to create new orders
+
+### Order Creation
+4. 🍽️ Select menu items with half/full portions
+5. 📝 Add special notes if needed
+6. ✔️ Submit order - automatically sent to kitchen
+
+### Billing
+7. 💰 Click "View Bill" on occupied tables
+8. 🖨️ Print professional invoices
+9. ✅ Complete orders to free tables
+
+</details>
+
+<details>
+<summary><b>👨‍🍳 For Chefs</b></summary>
+
+### Kitchen Workflow
+1. 🔐 Login with chef credentials
+2. 📋 View pending orders in real-time
+3. 🟡 Click "Start Preparing" to begin cooking
+4. ⏱️ Orders move to "Preparing" column
+5. ✅ Click "Mark Ready" when completed
+6. 🟢 Orders move to "Ready to Serve"
+7. 🔄 Dashboard auto-refreshes every 10 seconds
+
+</details>
+
+<details>
+<summary><b>👨‍💼 For Admins</b></summary>
+
+### System Management
+- ⚙️ Configure restaurant settings
+- 🍽️ Add/edit/delete menu items
+- 💰 Set tax rates
+- 📊 Manage table capacity
+- 👥 Access all waiter features
+
+</details>
+
+---
+
+## 🛠️ Technology Stack
+
+<div align="center">
+
+### Frontend
+![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![React](https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black)
+
+### Backend
+![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/-Express-000000?style=flat-square&logo=express)
+![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+
+### Security & Tools
+![bcrypt](https://img.shields.io/badge/-bcrypt-338EFF?style=flat-square)
+![Session](https://img.shields.io/badge/-Express_Session-000000?style=flat-square)
+![CORS](https://img.shields.io/badge/-CORS-FF6C37?style=flat-square)
+
+</div>
+
+---
+
+## 📂 Project Structure
+
+```
+RestoManagement/
+│
+├── 🎨 client/                    # Next.js Frontend
+│   ├── app/
+│   │   ├── page.tsx             # 🔐 Login page
+│   │   ├── waiter/
+│   │   │   └── page.tsx         # 🧑‍💼 Waiter dashboard
+│   │   └── chef/
+│   │       └── page.tsx         # 👨‍🍳 Chef dashboard
+│   ├── next.config.ts           # ⚙️ Next.js config
+│   └── package.json             # 📦 Frontend dependencies
+│
+├── 🗄️ Database
+│   └── database.sql             # 💾 MySQL schema
+│
+├── 🔧 Backend
+│   ├── server.js                # 🚀 Express API server
+│   ├── config.js                # ⚙️ Configuration
+│   └── package.json             # 📦 Backend dependencies
+│
+└── 📚 Documentation
+    ├── README.md                # 📖 This file
+    └── README_NEXTJS.md         # 📘 Detailed setup guide
+```
+
+---
+
+## 🗄️ Database Schema
+
+<details>
+<summary><b>View Database Structure</b></summary>
 
 ### Tables
-- `GET /api/tables` - Get all tables with status
 
-### Bills
-- `GET /api/orders/:id/bill` - Generate bill
+**users** - User authentication
+- `id`, `username`, `password`, `role`
 
-## Customization
+**restaurant_info** - Business details
+- `id`, `name`, `address`, `phone`, `tax_rate`
 
-### Add More Tables
-In `server.js`, modify the table initialization:
+**tables** - Table management
+- `id`, `table_number`, `capacity`, `status`
+
+**menu_items** - Menu catalog
+- `id`, `name`, `category`, `half_price`, `full_price`, `available`
+
+**orders** - Order tracking
+- `id`, `table_id`, `waiter_id`, `status`, `total_amount`, `created_at`, `completed_at`
+
+**order_items** - Order details
+- `id`, `order_id`, `menu_item_id`, `portion`, `quantity`, `price`, `notes`, `status`
+
+</details>
+
+---
+
+## 🔌 API Endpoints
+
+<div align="center">
+
+### 🔐 Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/login` | User authentication |
+| `POST` | `/api/logout` | End session |
+| `GET` | `/api/session` | Check current session |
+
+### 📋 Orders
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/orders` | Create new order |
+| `GET` | `/api/orders` | Fetch all orders |
+| `GET` | `/api/orders/:id` | Get specific order |
+| `PATCH` | `/api/orders/:id/status` | Update order status |
+| `GET` | `/api/orders/:id/bill` | Generate bill |
+
+### 🍽️ Menu Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/menu` | Get all menu items |
+| `POST` | `/api/menu` | Add new item |
+| `PUT` | `/api/menu/:id` | Update item |
+| `DELETE` | `/api/menu/:id` | Remove item |
+
+### 🪑 Tables
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/tables` | Get all tables with status |
+
+### ⚙️ Restaurant Settings
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/restaurant` | Get restaurant info |
+| `PUT` | `/api/restaurant` | Update settings |
+
+</div>
+
+---
+
+## 🎨 Customization
+
+<details>
+<summary><b>🪑 Add More Tables</b></summary>
+
+Edit `server.js` line ~60:
 ```javascript
-for (let i = 1; i <= 20; i++) {  // Change 20 to desired number
-  db.prepare('INSERT INTO tables (table_number) VALUES (?)').run(i);
+// Change the number of tables (default: 10)
+for (let i = 1; i <= 20; i++) {  // Increase to 20
+  await connection.query('INSERT INTO tables (table_number, capacity) VALUES (?, ?)', [i, 4]);
 }
 ```
+</details>
 
-### Change Port
-In `server.js`, modify:
-```javascript
-const PORT = 3000;  // Change to your desired port
+<details>
+<summary><b>🎨 Customize Colors</b></summary>
+
+Edit `client/tailwind.config.ts`:
+```typescript
+theme: {
+  extend: {
+    colors: {
+      primary: '#1e293b',    // Slate-900
+      secondary: '#10b981',  // Emerald-500
+      accent: '#f59e0b',     // Amber-500
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>💰 Change Tax Rate</b></summary>
+
+1. Login as **admin**
+2. Go to **Settings** tab
+3. Update **Tax Rate** field
+4. Click **Save Settings**
+</details>
+
+---
+
+## 🚀 Deployment
+
+<details>
+<summary><b>Production Deployment Guide</b></summary>
+
+### Backend (Node.js)
+1. Set environment variables
+2. Use PM2 for process management
+3. Configure reverse proxy (Nginx)
+4. Enable HTTPS with SSL certificate
+
+### Frontend (Next.js)
+1. Build production bundle: `npm run build`
+2. Deploy to Vercel, Netlify, or custom server
+3. Update API endpoint URLs
+4. Configure environment variables
+
+### Database
+1. Use production MySQL server
+2. Set up regular backups
+3. Configure connection pooling
+4. Enable query optimization
+
+</details>
+
+---
+
+## 🔮 Future Enhancements
+
+<table>
+<tr>
+<td width="50%">
+
+### 📊 Analytics
+- [ ] Daily sales reports
+- [ ] Monthly analytics
+- [ ] Popular items tracking
+- [ ] Peak hours analysis
+
+### 👥 Customer Features
+- [ ] Customer profiles
+- [ ] Loyalty program
+- [ ] Reservation system
+- [ ] Feedback system
+
+</td>
+<td width="50%">
+
+### 🖥️ Tech Improvements
+- [ ] Mobile app (React Native)
+- [ ] Kitchen Display System
+- [ ] Multi-location support
+- [ ] Real-time notifications
+
+### 💳 Integrations
+- [ ] Payment gateway
+- [ ] Inventory management
+- [ ] Accounting software
+- [ ] Delivery platforms
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🤝 Contributing
+
+Contributions are always welcome! Here's how:
+
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. 💾 Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. 📤 Push to branch (`git push origin feature/AmazingFeature`)
+5. 🔀 Open a Pull Request
+
+---
+
+## 📄 License
+
+```
+MIT License
+
+Copyright (c) 2026 Restaurant Management System
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software.
 ```
 
-### Modify Tax Rate
-Login as admin → Settings tab → Update tax rate
+---
 
-## Features for Future Enhancement
+## 💬 Support
 
-- Order history and analytics
-- Daily/monthly sales reports
-- Customer management
-- Reservation system
-- Kitchen display system (KDS)
-- Mobile app version
-- Multi-restaurant support
-- Integration with payment systems
+<div align="center">
 
-## License
+### Need Help?
 
-MIT License - Feel free to use for your restaurant!
+[![GitHub Issues](https://img.shields.io/github/issues/rohit27m/RestoManagement?style=for-the-badge)](https://github.com/rohit27m/RestoManagement/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/rohit27m/RestoManagement?style=for-the-badge)](https://github.com/rohit27m/RestoManagement/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/rohit27m/RestoManagement?style=for-the-badge)](https://github.com/rohit27m/RestoManagement/network)
 
-## Support
+**Found this helpful? Give it a ⭐️!**
 
-For issues or questions, please create an issue in the repository.
+---
+
+Made with ❤️ by [Rohit](https://github.com/rohit27m)
+
+</div>
