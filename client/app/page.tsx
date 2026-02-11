@@ -95,7 +95,7 @@ export default function LoginPage() {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition bg-white"
+              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition bg-white text-slate-900 font-medium"
             >
               <option value="waiter">Waiter</option>
               <option value="chef">Chef</option>
