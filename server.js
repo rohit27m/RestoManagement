@@ -87,11 +87,12 @@ function requireRole(...roles) {
 }
 
 // ===== AUTH ROUTES =====
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   
   try {
-    const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+    const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+    const user = rows[0];
     
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -129,29 +130,29 @@ app.get('/api/session', (req, res) => {
 });
 
 // ===== RESTAURANT INFO ROUTES =====
-app.get('/api/restaurant', (req, res) => {
+app.get('/api/restaurant', async (req, res) => {
   try {
-    const info = db.prepare('SELECT * FROM restaurant_info WHERE id = 1').get();
-    res.json(info);
+    const [rows] = await pool.query('SELECT * FROM restaurant_info WHERE id = 1');
+    res.json(rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.put('/api/restaurant', requireAuth, (req, res) => {
-  const { name, addressasync (req, res) => {
-  const { username, password } = req.body;
+app.put('/api/restaurant', requireAuth, async (req, res) => {
+  const { name, address, phone, tax_rate } = req.body;
   
   try {
-    const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
-    const user = rows[0]
+    await pool.query('UPDATE restaurant_info SET name = ?, address = ?, phone = ?, tax_rate = ? WHERE id = 1',
+      [name, address, phone, tax_rate]);
     res.json({ message: 'Restaurant info updated' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// ===== MENU ROUTES =====async (req, res) => {
+// ===== MENU ROUTES =====
+app.get('/api/menu', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM menu_items ORDER BY category, name');
     res.json(rows);
@@ -186,15 +187,15 @@ app.put('/api/menu/:id', requireAuth, async (req, res) => {
 
 app.delete('/api/menu/:id', requireAuth, async (req, res) => {
   try {
-    await pool.query('DELETE FROM menu_items WHERE id = ?', [req.params.id]
+    await pool.query('DELETE FROM menu_items WHERE id = ?', [req.params.id]);
+    res.json({ message: 'Menu item deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.put('/api/restaurant', requireAuth, async (req, res) => {
-  const { name, address, phone, tax_rate } = req.body;
-  
-  try {
-    await pool.query('UPDATE restaurasync (req, res) => {
+// ===== TABLE ROUTES =====
+app.get('/api/tables', async (req, res) => {
   try {
     const [rows] = await pool.query(`
       SELECT t.*, 
@@ -204,14 +205,14 @@ app.put('/api/restaurant', requireAuth, async (req, res) => {
       LEFT JOIN orders o ON t.id = o.table_id AND o.status != 'completed'
       ORDER BY t.table_number
     `);
-    res.json(row
-    res.json(tables);
+    res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// ===== ORDER ROUTES =====async (req, res) => {
+// ===== ORDER ROUTES =====
+app.post('/api/orders', requireRole('waiter', 'admin'), async (req, res) => {
   const { table_id, items } = req.body;
   
   try {
@@ -239,15 +240,14 @@ app.put('/api/restaurant', requireAuth, async (req, res) => {
     }
 
     await pool.query('UPDATE orders SET total_amount = ? WHERE id = ?', [totalAmount, orderId]);
-    await pool.query('UPDATE tables SET status = ? WHERE id = ?', ['occupied', table_id]rderId);
-    db.prepare('UPDATE tables SET status = ? WHERE id = ?').run('occupied', table_id);
+    await pool.query('UPDATE tables SET status = ? WHERE id = ?', ['occupied', table_id]);
 
     res.json({ id: orderId, message: 'Order created successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-async (req, res) => {
+app.get('/api/orders', requireAuth, async (req, res) => {
   const { status } = req.query;
   
   try {
@@ -277,8 +277,7 @@ async (req, res) => {
         JOIN menu_items mi ON oi.menu_item_id = mi.id
         WHERE oi.order_id = ?
       `, [order.id]);
-      order.items = items_id = ?
-      `).all(order.id);
+      order.items = items;
     }
     
     res.json(orders);
@@ -286,7 +285,7 @@ async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-async (req, res) => {
+app.get('/api/orders/:id', requireAuth, async (req, res) => {
   try {
     const [orderRows] = await pool.query(`
       SELECT o.*, 
@@ -309,14 +308,13 @@ async (req, res) => {
       JOIN menu_items mi ON oi.menu_item_id = mi.id
       WHERE oi.order_id = ?
     `, [order.id]);
-    order.items = items_id = ?
-    `).all(order.id);
+    order.items = items;
 
     res.json(order);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});async (req, res) => {
+});app.patch('/api/orders/:id/status', requireRole('waiter', 'admin'), async (req, res) => {
   const { status } = req.body;
   
   try {
@@ -340,18 +338,16 @@ async (req, res) => {
   }
 });
 
-app.patch('/api/order-items/:id/status', requireRole('chef'), async (req, res) => {
+app.patch('/api/order-items/:id/status', requireRole('chef', 'admin'), async (req, res) => {
   const { status } = req.body;
   
   try {
-    await pool.query('UPDATE order_items SET `status` = ? WHERE id = ?', [status, req.params.id]
-  try {
-    db.prepare('UPDATE order_items SET status = ? WHERE id = ?').run(status, req.params.id);
+    await pool.query('UPDATE order_items SET `status` = ? WHERE id = ?', [status, req.params.id]);
     res.json({ message: 'Item status updated' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});async (req, res) => {
+});app.get('/api/orders/:id/bill', requireAuth, async (req, res) => {
   try {
     const [orderRows] = await pool.query(`
       SELECT o.*, 
@@ -377,10 +373,7 @@ app.patch('/api/order-items/:id/status', requireRole('chef'), async (req, res) =
       JOIN menu_items mi ON oi.menu_item_id = mi.id
       WHERE oi.order_id = ?
     `, [order.id]);
-    order.items = itemsms oi
-      JOIN menu_items mi ON oi.menu_item_id = mi.id
-      WHERE oi.order_id = ?
-    `).all(order.id);
+    order.items = items;
 
     const subtotal = order.total_amount;
     const tax = (subtotal * restaurant.tax_rate) / 100;
