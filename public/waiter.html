@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waiter Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard">
+    <header>
+      <h1>🍽️ Waiter Dashboard</h1>
+      <div class="user-info">
+        <span id="username"></span>
+        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('tables')">Tables</button>
+      <button class="tab-btn" onclick="showTab('orders')">Orders</button>
+      <button class="tab-btn" onclick="showTab('menu')">Menu Management</button>
+      <button class="tab-btn" onclick="showTab('settings')">Settings</button>
+    </div>
+
+    <!-- TABLES TAB -->
+    <div id="tables-tab" class="tab-content active">
+      <h2>Table Status</h2>
+      <div id="tables-grid" class="tables-grid"></div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div id="orders-tab" class="tab-content">
+      <h2>Active Orders</h2>
+      <div id="orders-list"></div>
+    </div>
+
+    <!-- MENU TAB -->
+    <div id="menu-tab" class="tab-content">
+      <h2>Menu Management</h2>
+      <button onclick="showAddMenuItem()" class="btn btn-primary">Add Menu Item</button>
+      <div id="menu-list" class="menu-list"></div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="settings-tab" class="tab-content">
+      <h2>Restaurant Settings</h2>
+      <form id="restaurantForm" class="form">
+        <div class="form-group">
+          <label>Restaurant Name</label>
+          <input type="text" id="restaurantName" required>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" id="restaurantAddress">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="restaurantPhone">
+        </div>
+        <div class="form-group">
+          <label>Tax Rate (%)</label>
+          <input type="number" id="taxRate" step="0.1" min="0">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- NEW ORDER MODAL -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeOrderModal()">&times;</span>
+      <h2>New Order - Table <span id="orderTableNumber"></span></h2>
+      
+      <div id="menuItems" class="menu-items"></div>
+      
+      <h3>Order Items</h3>
+      <div id="orderItems"></div>
+      <div class="order-total">
+        <strong>Total: ₹<span id="orderTotal">0.00</span></strong>
+      </div>
+      
+      <button onclick="submitOrder()" class="btn btn-primary btn-large">Place Order</button>
+    </div>
+  </div>
+
+  <!-- BILL MODAL -->
+  <div id="billModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeBillModal()">&times;</span>
+      <div id="billContent"></div>
+      <button onclick="window.print()" class="btn btn-primary">Print Bill</button>
+      <button onclick="completeOrder()" class="btn btn-success">Complete & Close Table</button>
+    </div>
+  </div>
+
+  <!-- ADD MENU ITEM MODAL -->
+  <div id="menuModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeMenuModal()">&times;</span>
+      <h2>Add Menu Item</h2>
+      <form id="menuItemForm">
+        <div class="form-group">
+          <label>Item Name</label>
+          <input type="text" id="itemName" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" id="itemCategory" placeholder="e.g., Starters, Main Course, Desserts">
+        </div>
+        <div class="form-group">
+          <label>Half Price (optional)</label>
+          <input type="number" id="halfPrice" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label>Full Price</label>
+          <input type="number" id="fullPrice" step="0.01" min="0" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Item</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="waiter.js"></script>
+</body>
+</html>

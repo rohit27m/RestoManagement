@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chef Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard">
+    <header>
+      <h1>👨‍🍳 Chef Dashboard</h1>
+      <div class="user-info">
+        <span id="username"></span>
+        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+      </div>
+    </header>
+
+    <div class="chef-layout">
+      <div class="orders-column">
+        <h2>Pending Orders</h2>
+        <div id="pending-orders"></div>
+      </div>
+      
+      <div class="orders-column">
+        <h2>Preparing</h2>
+        <div id="preparing-orders"></div>
+      </div>
+      
+      <div class="orders-column">
+        <h2>Ready to Serve</h2>
+        <div id="ready-orders"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="chef.js"></script>
+</body>
+</html>
