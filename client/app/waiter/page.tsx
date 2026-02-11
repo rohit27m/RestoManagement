@@ -76,7 +76,7 @@ export default function WaiterDashboard() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/session', {
+      const response = await fetch('http://localhost:4000/api/session', {
         credentials: 'include',
       });
       if (response.ok) {
@@ -92,7 +92,7 @@ export default function WaiterDashboard() {
   };
 
   const logout = async () => {
-    await fetch('http://localhost:3000/api/logout', {
+    await fetch('http://localhost:4000/api/logout', {
       method: 'POST',
       credentials: 'include',
     });
@@ -101,7 +101,7 @@ export default function WaiterDashboard() {
 
   const loadTables = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/tables', {
+      const response = await fetch('http://localhost:4000/api/tables', {
         credentials: 'include',
       });
       const data = await response.json();
@@ -113,7 +113,7 @@ export default function WaiterDashboard() {
 
   const loadOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://localhost:4000/api/orders', {
         credentials: 'include',
       });
       const data = await response.json();
@@ -125,7 +125,7 @@ export default function WaiterDashboard() {
 
   const loadMenu = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/menu', {
+      const response = await fetch('http://localhost:4000/api/menu', {
         credentials: 'include',
       });
       const data = await response.json();
@@ -137,7 +137,7 @@ export default function WaiterDashboard() {
 
   const loadSettings = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/restaurant', {
+      const response = await fetch('http://localhost:4000/api/restaurant', {
         credentials: 'include',
       });
       const data = await response.json();
@@ -201,7 +201,7 @@ export default function WaiterDashboard() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://localhost:4000/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -231,7 +231,7 @@ export default function WaiterDashboard() {
   const viewBill = async (orderId: number) => {
     setCurrentOrderId(orderId);
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${orderId}/bill`, {
+      const response = await fetch(`http://localhost:4000/api/orders/${orderId}/bill`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -246,7 +246,7 @@ export default function WaiterDashboard() {
     if (!currentOrderId) return;
     
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${currentOrderId}/status`, {
+      const response = await fetch(`http://localhost:4000/api/orders/${currentOrderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

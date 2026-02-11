@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 
 // Initialize MySQL connection pool
 const pool = mysql.createPool({
@@ -22,7 +22,7 @@ const pool = mysql.createPool({
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3001', // Next.js dev server
+  origin: 'http://localhost:3000', // Next.js dev server
   credentials: true
 }));
 app.use(bodyParser.json());

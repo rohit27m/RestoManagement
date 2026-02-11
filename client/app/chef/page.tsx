@@ -41,7 +41,7 @@ export default function ChefDashboard() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/session', {
+      const response = await fetch('http://localhost:4000/api/session', {
         credentials: 'include',
       });
       if (response.ok) {
@@ -62,7 +62,7 @@ export default function ChefDashboard() {
   };
 
   const logout = async () => {
-    await fetch('http://localhost:3000/api/logout', {
+    await fetch('http://localhost:4000/api/logout', {
       method: 'POST',
       credentials: 'include',
     });
@@ -71,7 +71,7 @@ export default function ChefDashboard() {
 
   const loadOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://localhost:4000/api/orders', {
         credentials: 'include',
       });
       const orders = await response.json();
@@ -86,7 +86,7 @@ export default function ChefDashboard() {
 
   const updateOrderStatus = async (orderId: number, status: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${orderId}/status`, {
+      const response = await fetch(`http://localhost:4000/api/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
