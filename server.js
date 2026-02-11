@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +21,10 @@ const pool = mysql.createPool({
 });
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:3001', // Next.js dev server
+  credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -27,7 +32,11 @@ app.use(session({
   secret: 'restaurant-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
+  cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'lax',
+    secure: false // set to true in production with HTTPS
+  }
 }));
 
 async function initDB() {
