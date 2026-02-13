@@ -50,10 +50,12 @@ async function initDB() {
     const [userRows] = await connection.query('SELECT COUNT(*) as count FROM users');
     if (userRows[0].count === 0) {
       const hashedAdmin = bcrypt.hashSync('admin123', 10);
+      const hashedManager = bcrypt.hashSync('manager123', 10);
       const hashedWaiter = bcrypt.hashSync('waiter123', 10);
       const hashedChef = bcrypt.hashSync('chef123', 10);
       
       await connection.query('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['admin', hashedAdmin, 'admin']);
+      await connection.query('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['manager', hashedManager, 'manager']);
       await connection.query('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['waiter1', hashedWaiter, 'waiter']);
       await connection.query('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['chef1', hashedChef, 'chef']);
     }
@@ -103,13 +105,31 @@ function requireRole(...roles) {
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   
+  console.log('Login attempt:', { username, passwordLength: password?.length });
+  
   try {
     const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
     const user = rows[0];
     
-    if (!user || !bcrypt.compareSync(password, user.password)) {
+    console.log('User found:', user ? 'yes' : 'no');
+    if (user) {
+      console.log('User details:', { id: user.id, username: user.username, role: user.role, hasPassword: !!user.password, passwordHash: user.password?.substring(0, 20) + '...' });
+    }
+    
+    if (!user) {
+      console.log('User not found');
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+    
+    const passwordMatch = bcrypt.compareSync(password, user.password);
+    console.log('Password comparison:', { match: passwordMatch, providedPassword: password, hashedPassword: user.password?.substring(0, 20) + '...' });
+    
+    if (!passwordMatch) {
+      console.log('Invalid credentials - password mismatch');
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    console.log('Password verified, generating token...');
 
     // Session-based auth (legacy)
     req.session.userId = user.id;
@@ -124,14 +144,18 @@ app.post('/api/login', async (req, res) => {
       restaurantId: user.restaurant_id
     });
 
-    res.json({
+    const response = {
       id: user.id,
       username: user.username,
       role: user.role,
       token,
       restaurantId: user.restaurant_id
-    });
+    };
+    
+    console.log('Login successful, sending response:', response);
+    res.json(response);
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -865,6 +889,7 @@ app.listen(PORT, () => {
   console.log(`Restaurant Management System running on http://localhost:${PORT}`);
   console.log('\nDefault Login Credentials:');
   console.log('Admin - Username: admin, Password: admin123');
+  console.log('Manager - Username: manager, Password: manager123');
   console.log('Waiter - Username: waiter1, Password: waiter123');
   console.log('Chef - Username: chef1, Password: chef123');
 });
