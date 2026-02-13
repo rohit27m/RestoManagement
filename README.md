@@ -2,16 +2,17 @@
 
 # 🍽️ Restaurant Management System
 
-### *Modern, Professional & Efficient*
+### *Modern, Professional & Efficient with Complete Payment Processing*
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/Express-4.18-green?style=for-the-badge&logo=express)](https://expressjs.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
+[![Stripe](https://img.shields.io/badge/Stripe-Payment-blueviolet?style=for-the-badge&logo=stripe)](https://stripe.com/)
 
-*A full-stack restaurant management solution with modern UI/UX*
+*A full-stack restaurant management solution with comprehensive payment processing*
 
-[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [📖 Documentation](#-documentation) • [🤝 Contributing](#-contributing)
+[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [💳 Payments](#-payment-system) • [📖 Documentation](#-documentation)
 
 ---
 
@@ -19,17 +20,18 @@
 
 ## 📋 Overview
 
-A comprehensive restaurant management system built with **Next.js** and **Express.js**, featuring separate dashboards for waiters and chefs. Designed with a clean, minimal UI using professional color schemes for the best user experience.
+A comprehensive restaurant management system built with **Next.js** and **Express.js**, featuring separate dashboards for waiters and chefs. Now includes a **complete payment processing system** with multiple payment methods, split billing, tip calculation, and digital receipts.
 
 <div align="center">
 
 ### 🎯 Core Capabilities
 
-| Waiters | Chefs | Admins |
-|:-------:|:-----:|:------:|
-| 📊 Table Management | 👨‍🍳 Kitchen Dashboard | ⚙️ System Settings |
-| 🍴 Order Creation | 📋 Order Queue | 🍽️ Menu Management |
-| 💰 Bill Generation | ⏱️ Real-time Updates | 📈 Restaurant Config |
+| Waiters | Chefs | Payments | Admins |
+|:-------:|:-----:|:--------:|:------:|
+| 📊 Table Management | 👨‍🍳 Kitchen Dashboard | 💳 Multi-Method | ⚙️ System Settings |
+| 🍴 Order Creation | 📋 Order Queue | 🔪 Split Bills | 🍽️ Menu Management |
+| 💰 Bill Generation | ⏱️ Real-time Updates | 📧 Digital Receipts | 💸 Refund Management |
+| 🧾 Receipt Printing | 🔄 Status Updates | 💡 Tip Calculator | 📈 Restaurant Config |
 
 </div>
 
@@ -53,6 +55,15 @@ A comprehensive restaurant management system built with **Next.js** and **Expres
 - 10 tables (configurable)
 - Color-coded availability
 
+### 💳 **Payment Processing** ⭐ NEW
+- Cash, Card, UPI, Wallet support
+- Split bill functionality
+- Tip calculation (quick % or custom)
+- PCI-compliant tokenization
+- Digital receipt via email
+- Payment status tracking
+- Refund management (admin)
+
 </td>
 <td width="50%">
 
@@ -62,15 +73,81 @@ A comprehensive restaurant management system built with **Next.js** and **Expres
 - Order status tracking
 - Kitchen workflow management
 
-### 💳 **Billing System**
+### 💰 **Billing System**
 - Professional bill format
 - Automatic tax calculation
 - Print-ready invoices
 - Itemized receipts
+- Tip integration
+- Payment method display
+
+### 🔐 **Security & Compliance**
+- PCI DSS compliant approach
+- Payment tokenization
+- No sensitive data storage
+- Audit trail for all transactions
+- SSL/HTTPS ready
 
 </td>
 </tr>
 </table>
+
+---
+
+## 💳 Payment System
+
+### Supported Payment Methods
+
+<table>
+<tr>
+<td align="center" width="25%">
+<h3>💵 Cash</h3>
+Instant processing<br>
+No validation required
+</td>
+<td align="center" width="25%">
+<h3>💳 Card</h3>
+Visa, Mastercard, Amex<br>
+Secure tokenization
+</td>
+<td align="center" width="25%">
+<h3>📱 UPI</h3>
+GPay, PhonePe, Paytm<br>
+Popular in India
+</td>
+<td align="center" width="25%">
+<h3>👛 Wallet</h3>
+Digital wallets<br>
+Quick checkout
+</td>
+</tr>
+</table>
+
+### Payment Features
+
+- ✅ **Split Bill**: Divide bill equally or by custom amounts
+- ✅ **Tip Calculator**: Quick % buttons (5%, 10%, 15%, 20%) or custom amount
+- ✅ **Digital Receipts**: Automatic email delivery with transaction details
+- ✅ **Payment Status**: Track unpaid, paid, partially paid, refunded
+- ✅ **Mock Stripe**: Development-ready with 95% success rate simulation
+- ✅ **Transaction History**: Complete audit trail for all payments
+- ✅ **Refund System**: Admin-only refund processing
+
+### Security & Compliance
+
+🔒 **PCI Compliant Approach**
+- Tokenized payment data (never store raw card numbers)
+- Stripe-managed secure tokens
+- Encrypted transmission
+- Database stores only references
+
+📧 **Digital Receipt System**
+- HTML & Plain text formats
+- Professional design
+- Instant email delivery
+- Mock email service for testing
+
+For detailed payment documentation, see [PAYMENT_SYSTEM.md](PAYMENT_SYSTEM.md)
 
 ---
 
@@ -149,7 +226,60 @@ Backend API: http://localhost:4000
 ### Billing
 7. 💰 Click "View Bill" on occupied tables
 8. 🖨️ Print professional invoices
-9. ✅ Complete orders to free tables
+9. 💳 **Process Payment** - NEW!
+   - Choose payment method (Cash/Card/UPI/Wallet)
+   - Add tip (quick % or custom amount)
+   - Split bill if needed
+   - Enter customer email for digital receipt
+   - Submit payment
+10. ✅ Complete orders to free tables
+
+</details>
+
+<details>
+<summary><b>💳 Payment Processing</b></summary>
+
+### Using the Payment System
+1. 🧾 View bill for any order
+2. 💳 Click "Process Payment" button
+3. 🧮 **Add Tip (Optional)**
+   - Quick buttons: 5%, 10%, 15%, 20%
+   - Or enter custom amount
+4. 🔪 **Split Bill (Optional)**
+   - Enable split bill checkbox
+   - Enter number of splits
+   - System calculates equal amounts
+5. 💰 **Select Payment Method**
+   - 💵 Cash - Instant
+   - 💳 Card - Enter card details
+   - 📱 UPI - Enter UPI ID
+   - 👛 Wallet - Select provider
+6. 📧 **Customer Details (Optional)**
+   - Name for receipt
+   - Email for digital receipt
+7. ✅ Submit Payment
+8. 📨 Receipt automatically sent to email
+
+### Payment Methods Details
+
+**Card Payments**
+- Enter 16-digit card number
+- Expiry date (MM/YY)
+- 3-4 digit CVV
+- Secure tokenization (PCI compliant)
+
+**UPI Payments**
+- Enter UPI ID (example@upi)
+- Common: @paytm, @gpay, @phonepe
+- Instant verification
+
+**Wallet Payments**
+- Select: Paytm, PhonePe, Google Pay, Amazon Pay
+- Quick checkout
+
+**Cash Payments**
+- No validation required
+- Instant processing
 
 </details>
 

@@ -301,6 +301,171 @@ async function viewBill(orderId) {
   }
 }
 
+let currentBillData = null;
+let paymentTipAmount = 0;
+let paymentFinalTotal = 0;
+
+async function processPayment() {
+  closeBillModal();
+  
+  // Load bill data for payment
+  try {
+    const response = await fetch(`/api/orders/${currentOrderId}/bill`);
+    currentBillData = await response.json();
+    paymentFinalTotal = currentBillData.total;
+    
+    document.getElementById('paymentModal').style.display = 'block';
+    updatePaymentSummary();
+  } catch (error) {
+    alert('Error loading payment details');
+  }
+}
+
+function updatePaymentSummary() {
+  if (!currentBillData) return;
+  
+  const summaryDiv = document.getElementById('paymentSummary');
+  summaryDiv.innerHTML = `
+    <div class="payment-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span>₹${currentBillData.subtotal.toFixed(2)}</span>
+      </div>
+      <div class="summary-row">
+        <span>Tax (${currentBillData.restaurant.tax_rate}%):</span>
+        <span>₹${currentBillData.tax.toFixed(2)}</span>
+      </div>
+      ${paymentTipAmount > 0 ? `
+        <div class="summary-row tip-row">
+          <span>Tip:</span>
+          <span>₹${paymentTipAmount.toFixed(2)}</span>
+        </div>
+      ` : ''}
+      <div class="summary-row total-row">
+        <span><strong>Total:</strong></span>
+        <span><strong>₹${paymentFinalTotal.toFixed(2)}</strong></span>
+      </div>
+    </div>
+  `;
+}
+
+function setTipPercentage(percent) {
+  if (!currentBillData) return;
+  
+  const billTotal = currentBillData.total;
+  paymentTipAmount = (billTotal * percent) / 100;
+  paymentFinalTotal = billTotal + paymentTipAmount;
+  
+  // Clear custom tip input
+  document.getElementById('customTip').value = '';
+  
+  updatePaymentSummary();
+}
+
+function setCustomTip() {
+  if (!currentBillData) return;
+  
+  const customAmount = parseFloat(document.getElementById('customTip').value) || 0;
+  paymentTipAmount = customAmount;
+  paymentFinalTotal = currentBillData.total + paymentTipAmount;
+  
+  updatePaymentSummary();
+}
+
+async function submitPayment() {
+  const paymentMethod = document.getElementById('paymentMethod').value;
+  const customerEmail = document.getElementById('customerEmail').value;
+  const customerName = document.getElementById('customerName').value;
+  
+  // Validate payment details based on method
+  if (paymentMethod === 'card') {
+    const cardNumber = document.getElementById('cardNumber').value;
+    const cardExpiry = document.getElementById('cardExpiry').value;
+    const cardCVV = document.getElementById('cardCVV').value;
+    
+    if (!cardNumber || !cardExpiry || !cardCVV) {
+      alert('Please enter complete card details');
+      return;
+    }
+  } else if (paymentMethod === 'upi') {
+    const upiId = document.getElementById('upiId').value;
+    if (!upiId || !upiId.includes('@')) {
+      alert('Please enter valid UPI ID');
+      return;
+    }
+  }
+  
+  // Show processing
+  document.getElementById('submitPaymentBtn').textContent = 'Processing...';
+  document.getElementById('submitPaymentBtn').disabled = true;
+  
+  try {
+    const paymentData = {
+      orderId: currentOrderId,
+      paymentMethod,
+      amount: paymentFinalTotal,
+      tipAmount: paymentTipAmount,
+      customerEmail: customerEmail || undefined,
+      customerName: customerName || undefined
+    };
+    
+    const response = await fetch('/api/payment/process', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(paymentData)
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      
+      // Show success message
+      alert(`Payment Successful!\nTransaction ID: ${result.transactionId}${result.receiptSent ? '\n\nReceipt sent to ' + customerEmail : ''}`);
+      
+      closePaymentModal();
+      loadTables();
+      loadOrders();
+    } else {
+      const error = await response.json();
+      alert(`Payment failed: ${error.error}`);
+    }
+  } catch (error) {
+    alert('Payment processing error. Please try again.');
+  } finally {
+    document.getElementById('submitPaymentBtn').textContent = 'Submit Payment';
+    document.getElementById('submitPaymentBtn').disabled = false;
+  }
+}
+
+function changePaymentMethod() {
+  const method = document.getElementById('paymentMethod').value;
+  
+  // Hide all payment detail sections
+  document.querySelectorAll('.payment-details').forEach(el => el.style.display = 'none');
+  
+  // Show selected payment method details
+  if (method === 'card') {
+    document.getElementById('cardDetails').style.display = 'block';
+  } else if (method === 'upi') {
+    document.getElementById('upiDetails').style.display = 'block';
+  } else if (method === 'wallet') {
+    document.getElementById('walletDetails').style.display = 'block';
+  }
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentModal').style.display = 'none';
+  paymentTipAmount = 0;
+  paymentFinalTotal = 0;
+  currentBillData = null;
+  
+  // Reset form
+  document.getElementById('paymentMethod').value = 'cash';
+  document.getElementById('customerEmail').value = '';
+  document.getElementById('customerName').value = '';
+  document.getElementById('customTip').value = '';
+  changePaymentMethod();
+}
+
 async function completeOrder() {
   if (!confirm('Mark this order as completed and close the table?')) return;
   

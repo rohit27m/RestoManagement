@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from '../components/ThemeToggle';
+import PaymentModal from '../components/PaymentModal';
 
 interface User {
   id: number;
@@ -57,6 +58,7 @@ export default function WaiterDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showBillModal, setShowBillModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [currentTableId, setCurrentTableId] = useState<number | null>(null);
   const [currentTableNumber, setCurrentTableNumber] = useState<number>(0);
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null);
@@ -241,6 +243,17 @@ export default function WaiterDashboard() {
     } catch (error) {
       alert('Error loading bill');
     }
+  };
+
+  const handlePayment = () => {
+    setShowBillModal(false);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentComplete = () => {
+    setShowPaymentModal(false);
+    loadTables();
+    loadOrders();
   };
 
   const completeOrder = async () => {
@@ -716,15 +729,26 @@ export default function WaiterDashboard() {
                   Print Bill
                 </button>
                 <button
-                  onClick={completeOrder}
-                  className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+                  onClick={handlePayment}
+                  className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition font-semibold"
                 >
-                  Complete & Close Table
+                  💳 Process Payment
                 </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && billData && currentOrderId && (
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          orderId={currentOrderId}
+          billData={billData}
+          onPaymentComplete={handlePaymentComplete}
+        />
       )}
     </div>
   );
