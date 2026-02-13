@@ -91,7 +91,98 @@
       <span class="close" onclick="closeBillModal()">&times;</span>
       <div id="billContent"></div>
       <button onclick="window.print()" class="btn btn-primary">Print Bill</button>
-      <button onclick="completeOrder()" class="btn btn-success">Complete & Close Table</button>
+      <button onclick="processPayment()" class="btn btn-success">💳 Process Payment</button>
+    </div>
+  </div>
+
+  <!-- PAYMENT MODAL -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content large">
+      <span class="close" onclick="closePaymentModal()">&times;</span>
+      <h2>Process Payment</h2>
+      
+      <div id="paymentSummary" class="payment-summary-container"></div>
+      
+      <!-- Tip Section -->
+      <div class="payment-section">
+        <h3>Add Tip (Optional)</h3>
+        <div class="tip-buttons">
+          <button onclick="setTipPercentage(0)" class="btn btn-sm">0%</button>
+          <button onclick="setTipPercentage(5)" class="btn btn-sm">5%</button>
+          <button onclick="setTipPercentage(10)" class="btn btn-sm">10%</button>
+          <button onclick="setTipPercentage(15)" class="btn btn-sm">15%</button>
+          <button onclick="setTipPercentage(20)" class="btn btn-sm">20%</button>
+        </div>
+        <div class="form-group">
+          <label>Custom Tip Amount</label>
+          <input type="number" id="customTip" placeholder="Enter custom amount" onchange="setCustomTip()" step="0.01" min="0">
+        </div>
+      </div>
+      
+      <!-- Payment Method -->
+      <div class="payment-section">
+        <h3>Payment Method</h3>
+        <select id="paymentMethod" onchange="changePaymentMethod()" class="form-control">
+          <option value="cash">💵 Cash</option>
+          <option value="card">💳 Card</option>
+          <option value="upi">📱 UPI</option>
+          <option value="wallet">👛 Wallet</option>
+        </select>
+      </div>
+      
+      <!-- Card Details -->
+      <div id="cardDetails" class="payment-details" style="display: none;">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expiry (MM/YY)</label>
+            <input type="text" id="cardExpiry" placeholder="12/25" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" id="cardCVV" placeholder="123" maxlength="4">
+          </div>
+        </div>
+      </div>
+      
+      <!-- UPI Details -->
+      <div id="upiDetails" class="payment-details" style="display: none;">
+        <div class="form-group">
+          <label>UPI ID</label>
+          <input type="text" id="upiId" placeholder="example@upi">
+        </div>
+      </div>
+      
+      <!-- Wallet Details -->
+      <div id="walletDetails" class="payment-details" style="display: none;">
+        <div class="form-group">
+          <label>Select Wallet</label>
+          <select id="walletProvider" class="form-control">
+            <option value="paytm">Paytm</option>
+            <option value="phonepe">PhonePe</option>
+            <option value="googlepay">Google Pay</option>
+            <option value="amazonpay">Amazon Pay</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Customer Details -->
+      <div class="payment-section">
+        <h3>Customer Details (Optional)</h3>
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input type="text" id="customerName" placeholder="Enter customer name">
+        </div>
+        <div class="form-group">
+          <label>Email for Digital Receipt</label>
+          <input type="email" id="customerEmail" placeholder="customer@example.com">
+        </div>
+      </div>
+      
+      <button id="submitPaymentBtn" onclick="submitPayment()" class="btn btn-success btn-large">Submit Payment</button>
     </div>
   </div>
 

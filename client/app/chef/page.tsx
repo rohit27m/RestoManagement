@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ThemeToggle from '../components/ThemeToggle';
 
 interface User {
   id: number;
@@ -115,31 +116,31 @@ export default function ChefDashboard() {
   };
 
   const OrderCard = ({ order, showButton, buttonText, buttonColor, onButtonClick }: any) => (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 mb-4 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-lg font-bold text-slate-900">Table {order.table_number}</h3>
-        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">{getTimeAgo(order.created_at)}</span>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Table {order.table_number}</h3>
+        <span className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-lg">{getTimeAgo(order.created_at)}</span>
       </div>
 
       <div className="space-y-2.5 mb-4">
         {order.items.map((item: OrderItem) => (
           <div
             key={item.id}
-            className="p-3 bg-slate-50 rounded-xl border border-slate-200"
+            className="p-3 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600"
           >
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <p className="font-semibold text-slate-900 mb-1">{item.item_name}</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{item.item_name}</p>
                 <div className="flex gap-2">
-                  <span className="inline-block px-2 py-1 bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">
+                  <span className="inline-block px-2 py-1 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-medium">
                     {item.portion}
                   </span>
-                  <span className="inline-block px-2 py-1 bg-slate-900 text-white rounded-lg text-xs font-medium">
+                  <span className="inline-block px-2 py-1 bg-slate-900 dark:bg-slate-600 text-white rounded-lg text-xs font-medium">
                     ×{item.quantity}
                   </span>
                 </div>
                 {item.notes && (
-                  <div className="text-xs text-slate-600 mt-2 italic">Note: {item.notes}</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 italic">Note: {item.notes}</div>
                 )}
               </div>
             </div>
@@ -167,27 +168,28 @@ export default function ChefDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-slate-900 dark:bg-slate-700 rounded-xl flex items-center justify-center">
               <span className="text-xl">👨‍🍳</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Chef Dashboard</h1>
-              <p className="text-xs text-slate-500">Kitchen order management</p>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Chef Dashboard</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Kitchen order management</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-slate-900">{user.username}</p>
-              <p className="text-xs text-slate-500 capitalize">{user.role}</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{user.username}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user.role}</p>
             </div>
+            <ThemeToggle />
             <button
               onClick={logout}
-              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition border border-slate-200"
+              className="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-xl transition border border-slate-200 dark:border-slate-600"
             >
               Logout
             </button>
@@ -200,15 +202,15 @@ export default function ChefDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Pending Orders */}
           <div>
-            <div className="bg-white border-2 border-amber-200 rounded-t-2xl px-5 py-4">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-800 border-2 border-amber-200 dark:border-amber-800 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <span className="w-2 h-2 bg-amber-400 rounded-full"></span>
                 Pending ({pendingOrders.length})
               </h2>
             </div>
-            <div className="bg-amber-50/30 border-2 border-t-0 border-amber-200 p-4 rounded-b-2xl min-h-[400px]">
+            <div className="bg-amber-50/30 dark:bg-amber-950/20 border-2 border-t-0 border-amber-200 dark:border-amber-800 p-4 rounded-b-2xl min-h-[400px]">
               {pendingOrders.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No pending orders</p>
+                <p className="text-center text-slate-500 dark:text-slate-400 py-8">No pending orders</p>
               ) : (
                 pendingOrders.map(order => (
                   <OrderCard
@@ -226,15 +228,15 @@ export default function ChefDashboard() {
 
           {/* Preparing Orders */}
           <div>
-            <div className="bg-white border-2 border-sky-200 rounded-t-2xl px-5 py-4">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-800 border-2 border-sky-200 dark:border-sky-800 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <span className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></span>
                 Preparing ({preparingOrders.length})
               </h2>
             </div>
-            <div className="bg-sky-50/30 border-2 border-t-0 border-sky-200 p-4 rounded-b-2xl min-h-[400px]">
+            <div className="bg-sky-50/30 dark:bg-sky-950/20 border-2 border-t-0 border-sky-200 dark:border-sky-800 p-4 rounded-b-2xl min-h-[400px]">
               {preparingOrders.length === 0 ? (
-                <p className="text-center text-slate-500 py-8 text-sm">No orders in preparation</p>
+                <p className="text-center text-slate-500 dark:text-slate-400 py-8 text-sm">No orders in preparation</p>
               ) : (
                 preparingOrders.map(order => (
                   <OrderCard
@@ -252,15 +254,15 @@ export default function ChefDashboard() {
 
           {/* Ready Orders */}
           <div>
-            <div className="bg-white border-2 border-emerald-200 rounded-t-2xl px-5 py-4">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-800 border-2 border-emerald-200 dark:border-emerald-800 rounded-t-2xl px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
                 Ready ({readyOrders.length})
               </h2>
             </div>
-            <div className="bg-emerald-50/30 border-2 border-t-0 border-emerald-200 p-4 rounded-b-2xl min-h-[400px]">
+            <div className="bg-emerald-50/30 dark:bg-emerald-950/20 border-2 border-t-0 border-emerald-200 dark:border-emerald-800 p-4 rounded-b-2xl min-h-[400px]">
               {readyOrders.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No orders ready</p>
+                <p className="text-center text-slate-500 dark:text-slate-400 py-8">No orders ready</p>
               ) : (
                 readyOrders.map(order => (
                   <OrderCard

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ThemeToggle from '../components/ThemeToggle';
+import PaymentModal from '../components/PaymentModal';
 
 interface User {
   id: number;
@@ -56,6 +58,7 @@ export default function WaiterDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showBillModal, setShowBillModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [currentTableId, setCurrentTableId] = useState<number | null>(null);
   const [currentTableNumber, setCurrentTableNumber] = useState<number>(0);
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null);
@@ -242,6 +245,17 @@ export default function WaiterDashboard() {
     }
   };
 
+  const handlePayment = () => {
+    setShowBillModal(false);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentComplete = () => {
+    setShowPaymentModal(false);
+    loadTables();
+    loadOrders();
+  };
+
   const completeOrder = async () => {
     if (!currentOrderId) return;
     
@@ -275,27 +289,28 @@ export default function WaiterDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-slate-900 dark:bg-slate-700 rounded-xl flex items-center justify-center">
               <span className="text-xl">🍽️</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Waiter Dashboard</h1>
-              <p className="text-xs text-slate-500">Manage orders and tables</p>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Waiter Dashboard</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Manage orders and tables</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-slate-900">{user.username}</p>
-              <p className="text-xs text-slate-500 capitalize">{user.role}</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{user.username}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user.role}</p>
             </div>
+            <ThemeToggle />
             <button
               onClick={logout}
-              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition border border-slate-200"
+              className="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-xl transition border border-slate-200 dark:border-slate-600"
             >
               Logout
             </button>
@@ -304,7 +319,7 @@ export default function WaiterDashboard() {
       </header>
 
       {/* Tabs */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex gap-1">
             {['tables', 'orders', 'menu', 'settings'].map(tab => (
@@ -313,13 +328,13 @@ export default function WaiterDashboard() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-4 font-semibold capitalize transition relative ${
                   activeTab === tab
-                    ? 'text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700'
+                    ? 'text-slate-900 dark:text-slate-100'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
                 }`}
               >
                 {tab}
                 {activeTab === tab && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-slate-100" />
                 )}
               </button>
             ))}
@@ -332,25 +347,25 @@ export default function WaiterDashboard() {
         {/* Tables Tab */}
         {activeTab === 'tables' && (
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Table Status</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Table Status</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {tables.map(table => (
                 <div
                   key={table.id}
                   className={`p-6 rounded-2xl border-2 transition-all ${
                     table.status === 'available'
-                      ? 'bg-white border-emerald-200 hover:border-emerald-300'
-                      : 'bg-slate-50 border-slate-300'
+                      ? 'bg-white dark:bg-slate-800 border-emerald-200 dark:border-emerald-700 hover:border-emerald-300 dark:hover:border-emerald-600'
+                      : 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600'
                   }`}
                 >
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-slate-900 mb-3">
+                    <div className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                       {table.table_number}
                     </div>
                     <div className={`text-xs font-bold uppercase tracking-wide mb-4 px-3 py-1 rounded-full inline-block ${
                       table.status === 'available' 
-                        ? 'bg-emerald-100 text-emerald-700' 
-                        : 'bg-slate-200 text-slate-700'
+                        ? 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300' 
+                        : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200'
                     }`}>
                       {table.status}
                     </div>
@@ -358,14 +373,14 @@ export default function WaiterDashboard() {
                       {table.status === 'available' ? (
                         <button
                           onClick={() => openOrderModal(table.id, table.table_number)}
-                          className="w-full px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl text-sm transition"
+                          className="w-full px-4 py-2.5 bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600 text-white font-medium rounded-xl text-sm transition"
                         >
                           New Order
                         </button>
                       ) : table.active_order_id ? (
                         <button
                           onClick={() => viewBill(table.active_order_id!)}
-                          className="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm transition"
+                          className="w-full px-4 py-2.5 bg-emerald-600 dark:bg-emerald-700 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white font-medium rounded-xl text-sm transition"
                         >
                           View Bill
                         </button>
@@ -714,15 +729,26 @@ export default function WaiterDashboard() {
                   Print Bill
                 </button>
                 <button
-                  onClick={completeOrder}
-                  className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+                  onClick={handlePayment}
+                  className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition font-semibold"
                 >
-                  Complete & Close Table
+                  💳 Process Payment
                 </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && billData && currentOrderId && (
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          orderId={currentOrderId}
+          billData={billData}
+          onPaymentComplete={handlePaymentComplete}
+        />
       )}
     </div>
   );
