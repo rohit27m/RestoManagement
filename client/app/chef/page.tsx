@@ -173,9 +173,11 @@ export default function ChefDashboard() {
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-slate-900 dark:bg-slate-700 rounded-xl flex items-center justify-center">
-              <span className="text-xl">👨‍🍳</span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="RestoTrack Logo" 
+              className="h-10 w-auto"
+            />
             <div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Chef Dashboard</h1>
               <p className="text-xs text-slate-500 dark:text-slate-400">Kitchen order management</p>

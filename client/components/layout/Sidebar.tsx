@@ -126,8 +126,14 @@ const Sidebar = ({ role }: SidebarProps) => {
     <aside className="w-64 bg-surface border-r border-default flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-default">
-        <h1 className="text-xl font-bold">RestaurantOS</h1>
-        <p className="text-sm text-secondary mt-1">
+        <div className="flex items-center gap-3 mb-2">
+          <img 
+            src="/logo.png" 
+            alt="RestoTrack Logo" 
+            className="h-10 w-auto"
+          />
+        </div>
+        <p className="text-sm text-secondary">
           {role === 'admin' ? 'Admin Panel' : 'Manager Panel'}
         </p>
       </div>
