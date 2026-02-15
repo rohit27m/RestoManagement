@@ -50,27 +50,6 @@ export default function HomePage() {
     },
   ];
 
-  const testimonials = [
-    {
-      name: 'Sarah Chen',
-      role: 'Restaurant Owner',
-      company: 'The Modern Kitchen',
-      quote: 'RestoTrack transformed how we operate. Order accuracy improved by 97% and our staff loves the intuitive interface.',
-    },
-    {
-      name: 'Michael Rodriguez',
-      role: 'Head Chef',
-      company: 'Culinary Arts Bistro',
-      quote: 'The kitchen management system is a game-changer. We reduced preparation time by 40% and eliminated order confusion.',
-    },
-    {
-      name: 'Emily Watson',
-      role: 'Operations Manager',
-      company: 'Harbor View Restaurant',
-      quote: 'Real-time analytics helped us optimize our menu and increase revenue by 35% in just three months.',
-    },
-  ];
-
   return (
     <>
       {/* Global Cinematic Background */}
@@ -115,7 +94,6 @@ export default function HomePage() {
           
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
-            <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Testimonials</a>
             <Link href="/login">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -212,8 +190,8 @@ export default function HomePage() {
               transition={{ duration: 1, delay: 0.8 }}
               className="pt-8"
             >
-              <p className="text-gray-500 text-sm font-medium">
-                Developed By <span className="text-white font-semibold">Rohit Munamarthi</span>
+              <p className="text-gray-400 text-xl font-semibold">
+                Developed By <span className="text-white font-bold text-2xl">Rohit Munamarthi</span>
               </p>
             </motion.div>
           </motion.div>
@@ -272,61 +250,6 @@ export default function HomePage() {
                   <div className="text-5xl mb-6">{feature.icon}</div>
                   <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
                   <p className="text-gray-400 leading-relaxed">{feature.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="relative py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
-              Trusted by restaurants
-            </h2>
-            <p className="text-xl text-gray-400">
-              See what our customers are saying
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="relative p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all"
-              >
-                <div className="mb-6">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-green-500 text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 text-lg leading-relaxed italic">
-                    "{testimonial.quote}"
-                  </p>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-green-700 flex items-center justify-center text-white font-bold text-lg">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-gray-400">{testimonial.role}</div>
-                    <div className="text-sm text-gray-500">{testimonial.company}</div>
-                  </div>
                 </div>
               </motion.div>
             ))}
