@@ -47,9 +47,9 @@ export default function ManagerDashboard() {
     ]);
   }, []);
 
-  const getStatusVariant = (status: string): 'success' | 'danger' | 'default' | 'outline' => {
+  const getStatusVariant = (status: string): 'success' | 'danger' | 'default' | 'warning' => {
     switch (status) {
-      case 'preparing': return 'outline';
+      case 'preparing': return 'warning';
       case 'served': return 'success';
       case 'completed': return 'default';
       default: return 'danger';

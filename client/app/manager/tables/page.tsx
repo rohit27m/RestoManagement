@@ -44,12 +44,12 @@ export default function TablesPage() {
     }
   };
 
-  const getStatusVariant = (status: string): 'success' | 'danger' | 'outline' => {
+  const getStatusVariant = (status: string): 'success' | 'danger' | 'warning' => {
     switch (status) {
       case 'available': return 'success';
       case 'occupied': return 'danger';
-      case 'reserved': return 'outline';
-      default: return 'outline';
+      case 'reserved': return 'warning';
+      default: return 'warning';
     }
   };
 

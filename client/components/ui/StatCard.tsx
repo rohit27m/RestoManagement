@@ -7,8 +7,11 @@ import { cn } from '@/lib/utils';
 interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   value: string | number;
-  change?: string;
-  changeType?: 'positive' | 'negative' | 'neutral';
+  subtitle?: string;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
   icon?: ReactNode;
   loading?: boolean;
 }
@@ -16,8 +19,8 @@ interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
 export function StatCard({
   title,
   value,
-  change,
-  changeType = 'neutral',
+  subtitle,
+  trend,
   icon,
   loading = false,
   className,
@@ -68,55 +71,59 @@ export function StatCard({
       )}
 
       {/* Title */}
-      <div className="text-sm font-medium text-tertiary mb-1">{title}</div>
+      <div className="text-sm font-medium text-secondary mb-2">{title}</div>
 
       {/* Value */}
-      <div className="flex items-baseline gap-2">
-        <div className="text-3xl font-bold tracking-tight">
-          {loading ? (
-            <div className="h-9 w-24 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
-          ) : typeof value === 'number' ? (
-            displayValue.toLocaleString()
-          ) : (
-            value
-          )}
-        </div>
-        
-        {change && !loading && (
-          <div
-            className={cn(
-              'text-xs font-medium flex items-center gap-1',
-              changeType === 'positive' && 'text-success',
-              changeType === 'negative' && 'text-danger',
-              changeType === 'neutral' && 'text-tertiary'
-            )}
-          >
-            {changeType === 'positive' && (
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M6 2L6 10M6 2L2 6M6 2L10 6"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-            {changeType === 'negative' && (
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M6 10L6 2M6 10L10 6M6 10L2 6"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-            {change}
-          </div>
+      <div className="text-3xl font-bold tracking-tight text-foreground mb-1">
+        {loading ? (
+          <div className="h-9 w-24 bg-foreground/5 rounded animate-pulse" />
+        ) : typeof value === 'number' ? (
+          displayValue.toLocaleString()
+        ) : (
+          value
         )}
       </div>
+      
+      {/* Subtitle */}
+      {subtitle && (
+        <div className="text-sm text-secondary mb-2">{subtitle}</div>
+      )}
+
+      {/* Trend */}
+      {trend && !loading && (
+        <div
+          className={cn(
+            'text-xs font-medium flex items-center gap-1',
+            trend.isPositive ? 'text-success' : 'text-danger'
+          )}
+        >
+          {trend.isPositive ? (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path
+                d="M6 2L6 10M6 2L2 6M6 2L10 6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ) : (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path
+                d="M6 10L6 2M6 10L10 6M6 10L2 6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+          {trend.value}% vs yesterday
+        </div>
+      )}
+
+      {/* Background gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-success/0 via-success/50 to-success/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Hover effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-success/0 via-success/5 to-success/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

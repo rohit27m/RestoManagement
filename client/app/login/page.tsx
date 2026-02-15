@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -27,67 +26,47 @@ export default function LoginPage() {
     }
   };
 
-  const demoAccounts = [
-    { role: 'Admin', username: 'admin', password: 'admin123' },
-    { role: 'Manager', username: 'manager', password: 'manager123' },
-    { role: 'Waiter', username: 'waiter1', password: 'waiter123' },
-    { role: 'Chef', username: 'chef1', password: 'chef123' },
-  ];
-
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center p-4">
       {/* Theme Toggle */}
       <div className="absolute top-6 right-6">
         <ThemeToggle />
       </div>
 
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md relative z-10"
-      >
-        {/* Logo */}
+      <div className="w-full max-w-md">
+        {/* Logo and Title */}
         <div className="text-center mb-8">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-success mb-4"
-          >
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-600 to-blue-600 shadow-lg mb-4">
             <svg
-              width="28"
-              height="28"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="white"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="text-white"
             >
               <path d="M3 3h18v18H3zM8 12h8M12 8v8" />
             </svg>
-          </motion.div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">RestaurantOS</h1>
-          <p className="text-sm text-secondary">Enterprise Management Platform</p>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            RestaurantOS
+          </h1>
+          <p className="text-slate-400">
+            Sign in to your account
+          </p>
         </div>
 
         {/* Login Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-surface border border-default rounded-2xl p-8 shadow-lg"
-        >
-          <h2 className="text-xl font-semibold mb-6">Sign in to your account</h2>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-2xl border border-slate-200 dark:border-slate-800">
+          <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white">Welcome Back</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Username */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium mb-2">
+              <label htmlFor="username" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                 Username
               </label>
               <input
@@ -99,16 +78,16 @@ export default function LoginPage() {
                 required
                 autoFocus
                 disabled={isLoading}
-                className="w-full h-11 px-4 bg-background border border-default rounded-xl text-sm
-                         focus:outline-none focus:ring-2 focus:ring-success focus:border-transparent
-                         disabled:opacity-50 disabled:cursor-not-allowed
-                         transition-all duration-200"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg 
+                         text-slate-900 dark:text-white placeholder-slate-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                         disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                 Password
               </label>
               <input
@@ -119,37 +98,38 @@ export default function LoginPage() {
                 placeholder="Enter your password"
                 required
                 disabled={isLoading}
-                className="w-full h-11 px-4 bg-background border border-default rounded-xl text-sm
-                         focus:outline-none focus:ring-2 focus:ring-success focus:border-transparent
-                         disabled:opacity-50 disabled:cursor-not-allowed
-                         transition-all duration-200"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg 
+                         text-slate-900 dark:text-white placeholder-slate-400
+                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                         disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               />
             </div>
 
             {/* Error Message */}
             {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="text-sm text-danger bg-danger-light border border-danger/20 rounded-xl p-3"
-              >
-                {error}
-              </motion.div>
+              <div className="text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {error}
+                </div>
+              </div>
             )}
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-11 bg-success hover:bg-success-hover text-white font-medium rounded-xl
-                       transition-all duration-200 active:scale-[0.98]
+              className="w-full py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold rounded-lg
+                       hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all
                        disabled:opacity-50 disabled:cursor-not-allowed
                        flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
                   <svg
-                    className="animate-spin h-4 w-4"
+                    className="animate-spin h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -171,50 +151,51 @@ export default function LoginPage() {
                   Signing in...
                 </>
               ) : (
-                'Sign in'
+                'Sign In'
               )}
             </button>
           </form>
-        </motion.div>
+        </div>
 
         {/* Demo Credentials */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-6 bg-surface border border-default rounded-2xl p-6"
-        >
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-tertiary mb-4">
-            Demo Credentials
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {demoAccounts.map((account) => (
-              <button
-                key={account.username}
-                onClick={() => {
-                  setUsername(account.username);
-                  setPassword(account.password);
-                }}
-                className="text-left p-3 rounded-xl border border-default hover:border-success/50 hover:bg-background
-                         transition-all duration-200 group"
-              >
-                <div className="text-xs font-medium text-tertiary mb-1">{account.role}</div>
-                <div className="text-sm font-mono text-xs">{account.username}</div>
-              </button>
-            ))}
+        <div className="mt-6 bg-white dark:bg-slate-900 rounded-xl p-5 shadow-xl border border-slate-200 dark:border-slate-800">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Demo Accounts</h3>
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <button
+              onClick={() => { setUsername('admin'); setPassword('admin123'); }}
+              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg text-left transition-all 
+                       border border-slate-200 dark:border-slate-700 hover:border-green-500"
+            >
+              <div className="font-semibold text-slate-900 dark:text-white">Admin</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">admin / admin123</div>
+            </button>
+            <button
+              onClick={() => { setUsername('manager'); setPassword('manager123'); }}
+              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg text-left transition-all 
+                       border border-slate-200 dark:border-slate-700 hover:border-blue-500"
+            >
+              <div className="font-semibold text-slate-900 dark:text-white">Manager</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">manager / manager123</div>
+            </button>
+            <button
+              onClick={() => { setUsername('waiter1'); setPassword('waiter123'); }}
+              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg text-left transition-all 
+                       border border-slate-200 dark:border-slate-700 hover:border-green-500"
+            >
+              <div className="font-semibold text-slate-900 dark:text-white">Waiter</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">waiter1 / waiter123</div>
+            </button>
+            <button
+              onClick={() => { setUsername('chef1'); setPassword('chef123'); }}
+              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg text-left transition-all 
+                       border border-slate-200 dark:border-slate-700 hover:border-blue-500"
+            >
+              <div className="font-semibold text-slate-900 dark:text-white">Chef</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">chef1 / chef123</div>
+            </button>
           </div>
-        </motion.div>
-
-        {/* Footer */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-center text-xs text-tertiary mt-8"
-        >
-          Built with precision for modern restaurants
-        </motion.p>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
