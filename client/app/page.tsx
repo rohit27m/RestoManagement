@@ -146,10 +146,7 @@ export default function HomePage() {
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1]"
                   style={{ letterSpacing: '-0.03em' }}>
                 Restaurant<br />
-                Management<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">
-                  Reimagined
-                </span>
+                Management
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
