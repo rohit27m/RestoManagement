@@ -2,13 +2,11 @@
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { DashboardLayout } from '@/components/layout';
-import { Header, Container } from '@/components/layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { StatCard } from '@/components/ui/StatCard';
+import { Card, CardHeader, CardTitle, CardContent, Badge, StatCard, Button } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface DashboardStats {
   todayOrders: number;
@@ -44,172 +42,175 @@ export default function ManagerDashboard() {
       { id: 1, table: 3, items: 'Butter Chicken, Naan x2', amount: 850, status: 'preparing', time: '5m ago' },
       { id: 2, table: 7, items: 'Paneer Tikka, Dal Makhani', amount: 720, status: 'served', time: '12m ago' },
       { id: 3, table: 5, items: 'Biryani, Raita', amount: 450, status: 'completed', time: '25m ago' },
+      { id: 4, table: 2, items: 'Chicken Tikka, Masala Tea', amount: 380, status: 'preparing', time: '2m ago' },
     ]);
   }, []);
-
-  const getStatusVariant = (status: string): 'success' | 'danger' | 'default' | 'warning' => {
-    switch (status) {
-      case 'preparing': return 'warning';
-      case 'served': return 'success';
-      case 'completed': return 'default';
-      default: return 'danger';
-    }
-  };
 
   return (
     <ProtectedRoute allowedRoles={['manager']}>
       <DashboardLayout role="manager">
-        <Header
-          title="Manager Dashboard"
-          subtitle={`Welcome back, ${user?.username}`}
-        />
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <motion.h2
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-3xl font-bold tracking-tight text-foreground"
+              >
+                Restaurant Pulse
+              </motion.h2>
+              <p className="text-muted-foreground text-sm font-medium mt-1">
+                Welcome back, <span className="text-primary">{user?.username || 'Manager'}</span>. Here's what's happening.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button variant="secondary" size="sm">Print Daily Summary</Button>
+              <Button variant="primary" size="sm" leftIcon={
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+              }>
+                New Order
+              </Button>
+            </div>
+          </div>
 
-        <Container className="py-8 space-y-8">
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
-              title="Active Orders"
+              title="Active Flow"
               value={stats.activeOrders}
-              subtitle={`${stats.todayOrders} total today`}
+              subtitle="Orders in kitchen"
+              icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6.5l1.09 1.09" /><path d="M10.5 10.5 13 8" /><path d="M18 6.13A4 4 0 0 1 16.59 13.5l-1.09-1.09" /><path d="M13.5 13.5 11 16" /></svg>}
               trend={{ value: 12, isPositive: true }}
             />
-
             <StatCard
-              title="Today's Revenue"
-              value={`₹${(stats.todayRevenue / 1000).toFixed(1)}K`}
-              subtitle="Daily earnings"
+              title="Revenue"
+              value={stats.todayRevenue}
+              subtitle="Earned today"
+              icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /><path d="M12 18V6" /></svg>}
               trend={{ value: 15, isPositive: true }}
             />
-
             <StatCard
-              title="Table Occupancy"
+              title="Capacity"
               value={`${stats.occupiedTables}/${stats.totalTables}`}
-              subtitle={`${Math.round((stats.occupiedTables / stats.totalTables) * 100)}% occupied`}
+              subtitle="Tables occupied"
+              icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10h18" /><path d="M3 14h18" /><path d="M3 18h18" /><path d="M3 6h18" /></svg>}
               trend={{ value: 8, isPositive: true }}
             />
-
             <StatCard
-              title="Avg Order Value"
-              value={`₹${Math.round(stats.todayRevenue / stats.todayOrders)}`}
-              subtitle="Per transaction"
-              trend={{ value: 8, isPositive: true }}
+              title="Efficiency"
+              value={Math.round(stats.todayRevenue / stats.todayOrders)}
+              subtitle="Avg order value"
+              icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>}
+              trend={{ value: 4.2, isPositive: true }}
             />
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.button
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-surface border border-default rounded-xl p-6 text-left hover:border-border-hover transition-colors"
-            >
-              <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-1">Manage Menu</h3>
-              <p className="text-sm text-secondary">Add, edit or remove menu items</p>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-surface border border-default rounded-xl p-6 text-left hover:border-border-hover transition-colors"
-            >
-              <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-1">View Orders</h3>
-              <p className="text-sm text-secondary">Track and manage active orders</p>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-surface border border-default rounded-xl p-6 text-left hover:border-border-hover transition-colors"
-            >
-              <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-1">Analytics</h3>
-              <p className="text-sm text-secondary">View sales and performance metrics</p>
-            </motion.button>
-          </div>
-
-          {/* Recent Orders */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Recent Orders</CardTitle>
-                <motion.button
-                  whileHover={{ x: 4 }}
-                  className="text-success hover:text-success-hover text-sm font-medium flex items-center gap-1"
-                >
-                  View All
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </motion.button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-default">
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Table</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Items</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Amount</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Status</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Time</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-secondary">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+          {/* Quick Actions & Recent Orders */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle>Live Orders</CardTitle>
+                    <p className="text-xs text-muted-foreground mt-1">Real-time status of current kitchen flow</p>
+                  </div>
+                  <Button variant="ghost" size="sm">Manage All</Button>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
                     {recentOrders.map((order, index) => (
-                      <motion.tr
+                      <motion.div
                         key={order.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="border-b border-default hover:bg-surface/50 transition-colors"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center justify-between p-4 rounded-xl border border-border/50 hover:border-primary/30 hover:bg-muted/30 transition-all group"
                       >
-                        <td className="py-4 px-4">
-                          <div className="font-medium">Table {order.table}</div>
-                        </td>
-                        <td className="py-4 px-4 text-secondary text-sm">{order.items}</td>
-                        <td className="py-4 px-4 font-medium">₹{order.amount}</td>
-                        <td className="py-4 px-4">
-                          <Badge variant={getStatusVariant(order.status)}>
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-secondary flex flex-col items-center justify-center border border-border">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase leading-none">TBL</span>
+                            <span className="text-lg font-bold text-foreground leading-none">{order.table}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm font-semibold text-foreground">{order.items}</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-muted-foreground">{order.time}</span>
+                              <span className="w-1 h-1 rounded-full bg-border" />
+                              <span className="text-xs font-bold text-foreground">₹{order.amount}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <Badge className={cn(
+                            "border-none px-3 py-1 text-[10px] font-bold uppercase tracking-wider",
+                            order.status === 'preparing' ? 'bg-amber-500/10 text-amber-500' :
+                              order.status === 'served' ? 'bg-sky-500/10 text-sky-500' :
+                                'bg-emerald-500/10 text-emerald-500'
+                          )}>
                             {order.status}
                           </Badge>
-                        </td>
-                        <td className="py-4 px-4 text-secondary text-sm">{order.time}</td>
-                        <td className="py-4 px-4">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="text-secondary hover:text-foreground transition-colors"
-                          >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                          </motion.button>
-                        </td>
-                      </motion.tr>
+                          <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                          </button>
+                        </div>
+                      </motion.div>
                     ))}
-                  </tbody>
-                </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-6 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 text-left flex flex-col gap-4 relative overflow-hidden group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20" /><path d="M2 12h20" /><path d="m4.93 4.93 14.14 14.14" /><path d="m4.93 19.07 14.14-14.14" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">Menu Creator</h3>
+                    <p className="text-sm opacity-80 font-medium">Add new signature dishes</p>
+                  </div>
+                  <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20" /><path d="M2 12h20" /></svg>
+                  </div>
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all text-left flex flex-col gap-4 group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10h18" /><path d="M3 14h18" /><path d="M3 18h18" /><path d="M3 6h18" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-foreground">Table Hub</h3>
+                    <p className="text-sm text-muted-foreground font-medium">Manage floor plan and bookings</p>
+                  </div>
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all text-left flex flex-col gap-4 group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-foreground">Invoice Gen</h3>
+                    <p className="text-sm text-muted-foreground font-medium">Review and generate bills</p>
+                  </div>
+                </motion.button>
               </div>
-            </CardContent>
-          </Card>
-        </Container>
+            </div>
+          </div>
+        </div>
       </DashboardLayout>
     </ProtectedRoute>
   );

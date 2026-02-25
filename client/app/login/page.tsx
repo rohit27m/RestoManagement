@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import ThemeToggle from '../components/ThemeToggle';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -19,174 +20,154 @@ export default function LoginPage() {
     try {
       await login(username, password);
     } catch (err) {
-      setError('Invalid username or password');
+      setError('The credentials provided do not match our records.');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleQuickLogin = (u: string, p: string) => {
+    setUsername(u);
+    setPassword(p);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center p-4">
-      {/* Theme Toggle */}
-      <div className="absolute top-6 right-6">
-        <ThemeToggle />
+    <div className="min-h-screen mesh-bg flex flex-col md:flex-row items-stretch overflow-hidden">
+      {/* Left Decoration (Desktop Only) */}
+      <div className="hidden lg:flex lg:w-1/2 relative p-12 flex-col justify-between">
+        <div className="relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20" /><path d="M12 12c-3.5 0-6.5-1.5-6.5-4.5S8.5 3 12 3s6.5 1.5 6.5 4.5-3 4.5-6.5 4.5Z" /><path d="M12 12c3.5 0 6.5 1.5 6.5 4.5S15.5 21 12 21s-6.5-1.5-6.5-4.5 3-4.5 6.5-4.5Z" /></svg>
+          </motion.div>
+        </div>
+
+        <div className="relative z-10 max-w-md">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl font-black text-white leading-none tracking-tighter"
+          >
+            RESTO <span className="text-primary-foreground">PRO</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-6 text-xl text-white/70 font-medium leading-relaxed"
+          >
+            The world's most advanced restaurant intelligence platform.
+            Designed for those who lead the industry.
+          </motion.p>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/20 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 right-0 w-64 h-64 bg-accent/20 rounded-full blur-[100px]" />
+        </div>
       </div>
 
-      <div className="w-full max-w-md">
-        {/* Logo and Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
-            <img 
-              src="/logo.png" 
-              alt="RestoTrack Logo" 
-              className="h-20 w-auto"
-            />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            RestaurantOS
-          </h1>
-          <p className="text-slate-400">
-            Sign in to your account
-          </p>
-        </div>
+      {/* Login Form Section */}
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="w-full max-w-[420px]"
+        >
+          <Card variant="glass" className="border-white/10 shadow-2xl overflow-visible relative">
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-t-xl" />
 
-        {/* Login Card */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-2xl border border-slate-200 dark:border-slate-800">
-          <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white">Welcome Back</h2>
+            <CardHeader className="space-y-1 pb-8">
+              <CardTitle className="text-3xl font-bold text-white">Identity Access</CardTitle>
+              <p className="text-white/50 text-sm font-medium">Verify your credentials to continue</p>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 ml-1">Universal ID</label>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="e.g. administrator"
+                      className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary/50 transition-all"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 ml-1">Passkey</label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary/50 transition-all"
+                      required
+                    />
+                  </div>
+                </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username */}
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                required
-                autoFocus
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg 
-                         text-slate-900 dark:text-white placeholder-slate-400
-                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
-                         disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              />
-            </div>
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/50 text-rose-500 text-xs font-bold leading-relaxed"
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg 
-                         text-slate-900 dark:text-white placeholder-slate-400
-                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
-                         disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              />
-            </div>
+                <Button
+                  type="submit"
+                  isLoading={isLoading}
+                  className="w-full h-14 rounded-xl text-lg font-bold"
+                >
+                  Authorize Access
+                </Button>
+              </form>
 
-            {/* Error Message */}
-            {error && (
-              <div className="text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {error}
+              <div className="relative my-8">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-white/10"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="px-4 bg-transparent text-white/30 backdrop-blur font-bold tracking-widest">Nodes</span>
                 </div>
               </div>
-            )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold rounded-lg
-                       hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all
-                       disabled:opacity-50 disabled:cursor-not-allowed
-                       flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="animate-spin h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </button>
-          </form>
-        </div>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => handleQuickLogin('admin', 'admin123')}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 hover:bg-white/10 transition-all group"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black group-hover:scale-110 transition-transform">A</div>
+                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest group-hover:text-white/60">Admin</div>
+                </button>
+                <button
+                  onClick={() => handleQuickLogin('manager', 'manager123')}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 hover:bg-white/10 transition-all group"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black group-hover:scale-110 transition-transform">M</div>
+                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest group-hover:text-white/60">Manager</div>
+                </button>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Demo Credentials */}
-        <div className="mt-6 bg-white dark:bg-slate-900 rounded-xl p-5 shadow-xl border border-slate-200 dark:border-slate-800">
-          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Demo Accounts</h3>
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <button
-              onClick={() => { setUsername('admin'); setPassword('admin123'); }}
-              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg text-left transition-all 
-                       border border-slate-200 dark:border-slate-700 hover:border-green-500"
-            >
-              <div className="font-semibold text-slate-900 dark:text-white">Admin</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">admin / admin123</div>
-            </button>
-            <button
-              onClick={() => { setUsername('manager'); setPassword('manager123'); }}
-              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg text-left transition-all 
-                       border border-slate-200 dark:border-slate-700 hover:border-blue-500"
-            >
-              <div className="font-semibold text-slate-900 dark:text-white">Manager</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">manager / manager123</div>
-            </button>
-            <button
-              onClick={() => { setUsername('waiter1'); setPassword('waiter123'); }}
-              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg text-left transition-all 
-                       border border-slate-200 dark:border-slate-700 hover:border-green-500"
-            >
-              <div className="font-semibold text-slate-900 dark:text-white">Waiter</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">waiter1 / waiter123</div>
-            </button>
-            <button
-              onClick={() => { setUsername('chef1'); setPassword('chef123'); }}
-              className="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg text-left transition-all 
-                       border border-slate-200 dark:border-slate-700 hover:border-blue-500"
-            >
-              <div className="font-semibold text-slate-900 dark:text-white">Chef</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">chef1 / chef123</div>
-            </button>
-          </div>
-        </div>
+          <p className="mt-8 text-center text-white/30 text-[10px] font-bold tracking-[0.2em] uppercase">
+            RestoPro Collective © All Rights Reserved 2026
+          </p>
+        </motion.div>
       </div>
     </div>
   );

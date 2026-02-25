@@ -6,3 +6,5 @@ export { Modal } from './Modal';
 export { Toast } from './Toast';
 export { Badge } from './Badge';
 export { Skeleton } from './Skeleton';
+export { StatCard } from './StatCard';
+
