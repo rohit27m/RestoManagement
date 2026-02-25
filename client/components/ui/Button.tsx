@@ -2,13 +2,15 @@
 
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   variant?: 'primary' | 'success' | 'danger' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -41,8 +43,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         className={cn(
           'btn',
           variants[variant],
@@ -52,7 +56,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         disabled={disabled || isLoading}
-        {...props}
+        {...(props as any)}
       >
         {isLoading ? (
           <>
@@ -85,7 +89,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {rightIcon && <span>{rightIcon}</span>}
           </>
         )}
-      </button>
+      </motion.button>
     );
   }
 );

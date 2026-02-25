@@ -42,17 +42,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (username: string, password: string) => {
     try {
+      console.log('Attempting login for:', username);
+      
       const response = await fetch('http://localhost:4000/api/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 
+      console.log('Login response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Login failed');
+        let errorMessage = 'Login failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData?.error || errorData?.message || `Server error (${response.status})`;
+        } catch {
+          errorMessage = `Server error (${response.status})`;
+        }
+        console.error('Login failed:', response.status, errorMessage);
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log('Login successful:', data);
+
       const userData: User = {
         id: data.id,
         username: data.username,
@@ -74,8 +91,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else if (data.role === 'chef') {
         router.push('/chef');
       }
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('fetch') || msg.includes('network') || msg.includes('NetworkError')) {
+        throw new Error('Cannot reach server. Please ensure the backend is running on port 4000.');
+      }
       throw error;
     }
   };

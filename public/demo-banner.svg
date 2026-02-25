@@ -1,0 +1,447 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <defs>
+    <style>
+      .bg { fill: #0a0a0f; }
+      .panel { fill: #111118; rx: 12; }
+      .card { fill: #16161f; }
+      .border { fill: none; stroke: #2a2a3a; stroke-width: 1; }
+      .primary { fill: #6366f1; }
+      .primary-text { fill: #818cf8; }
+      .muted { fill: #4a4a6a; }
+      .white { fill: #ffffff; }
+      .white60 { fill: rgba(255,255,255,0.6); }
+      .white30 { fill: rgba(255,255,255,0.3); }
+      .green { fill: #10b981; }
+      .red { fill: #f43f5e; }
+      .amber { fill: #f59e0b; }
+      .blue { fill: #3b82f6; }
+      .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+      /* Screen fade animations */
+      #screen-admin { animation: fadeScreen 16s infinite 0s; }
+      #screen-manager { animation: fadeScreen 16s infinite 4s; }
+      #screen-waiter { animation: fadeScreen 16s infinite 8s; }
+      #screen-chef { animation: fadeScreen 16s infinite 12s; }
+
+      @keyframes fadeScreen {
+        0%, 5%   { opacity: 0; }
+        10%, 22%  { opacity: 1; }
+        27%, 100% { opacity: 0; }
+      }
+
+      /* Stat counter animation */
+      .stat-bar { animation: growBar 2s ease-out forwards; }
+      @keyframes growBar {
+        from { transform: scaleX(0); }
+        to   { transform: scaleX(1); }
+      }
+
+      /* Pulse dot */
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; r: 4; }
+        50%       { opacity: 0.4; r: 6; }
+      }
+
+      /* Slide up rows */
+      .row1 { animation: slideUp 0.5s ease-out 0.2s both; }
+      .row2 { animation: slideUp 0.5s ease-out 0.35s both; }
+      .row3 { animation: slideUp 0.5s ease-out 0.5s both; }
+      .row4 { animation: slideUp 0.5s ease-out 0.65s both; }
+      @keyframes slideUp {
+        from { transform: translateY(12px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+
+      /* Badge blink */
+      .blink { animation: blink 1.4s step-end infinite; }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.2; }
+      }
+    </style>
+
+    <!-- Gradient defs -->
+    <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0a0a0f"/>
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="screenClip">
+      <rect x="240" y="40" width="620" height="420" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#heroBg)"/>
+  <ellipse cx="200" cy="250" rx="180" ry="180" fill="url(#glow)"/>
+  <ellipse cx="700" cy="250" rx="200" ry="200" fill="url(#glow)"/>
+
+  <!-- ===== LEFT PANEL: Sidebar ===== -->
+  <rect x="20" y="20" width="200" height="460" rx="14" fill="#111118"/>
+  <rect x="20" y="20" width="200" height="460" rx="14" fill="none" stroke="#2a2a3a" stroke-width="1"/>
+
+  <!-- Logo -->
+  <rect x="40" y="44" width="32" height="32" rx="9" fill="url(#primaryGrad)"/>
+  <text x="56" y="66" text-anchor="middle" class="sans white" font-size="18" font-weight="800">R</text>
+  <text x="82" y="56" class="sans white" font-size="13" font-weight="800">RestoPro</text>
+  <text x="82" y="70" class="sans" fill="#4a4a6a" font-size="9" font-weight="600" letter-spacing="2">PREMIUM</text>
+
+  <!-- Nav items - active -->
+  <rect x="32" y="96" width="176" height="38" rx="10" fill="#6366f1" fill-opacity="0.15"/>
+  <rect x="32" y="96" width="3" height="24" rx="2" fill="url(#primaryGrad)" transform="translate(0,7)"/>
+  <rect x="50" y="108" width="16" height="14" rx="3" fill="#6366f1" fill-opacity="0.6"/>
+  <text x="74" y="119" class="sans primary-text" font-size="12" font-weight="700">Dashboard</text>
+  <circle cx="194" cy="115" r="4" fill="#6366f1" class="pulse"/>
+
+  <!-- Nav items -->
+  <rect x="50" y="150" width="16" height="14" rx="3" fill="#2a2a3a"/>
+  <text x="74" y="161" class="sans" fill="#6b7280" font-size="12" font-weight="600">Menu</text>
+
+  <rect x="50" y="185" width="16" height="14" rx="3" fill="#2a2a3a"/>
+  <text x="74" y="196" class="sans" fill="#6b7280" font-size="12" font-weight="600">Orders</text>
+
+  <rect x="50" y="220" width="16" height="14" rx="3" fill="#2a2a3a"/>
+  <text x="74" y="231" class="sans" fill="#6b7280" font-size="12" font-weight="600">Tables</text>
+
+  <rect x="50" y="255" width="16" height="14" rx="3" fill="#2a2a3a"/>
+  <text x="74" y="266" class="sans" fill="#6b7280" font-size="12" font-weight="600">Insights</text>
+
+  <rect x="50" y="290" width="16" height="14" rx="3" fill="#2a2a3a"/>
+  <text x="74" y="301" class="sans" fill="#6b7280" font-size="12" font-weight="600">Invoices</text>
+
+  <!-- Pro badge -->
+  <rect x="32" y="400" width="176" height="50" rx="12" fill="#6366f1" fill-opacity="0.07" stroke="#6366f1" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="120" y="421" text-anchor="middle" class="sans primary-text" font-size="9" font-weight="800" letter-spacing="2">PRO PLAN</text>
+  <text x="120" y="438" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">All features unlocked</text>
+
+  <!-- Logout -->
+  <text x="120" y="472" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="11">Sign out</text>
+
+  <!-- ===== RIGHT: Screen Container ===== -->
+  <rect x="240" y="20" width="640" height="460" rx="14" fill="#0d0d14"/>
+  <rect x="240" y="20" width="640" height="460" rx="14" fill="none" stroke="#2a2a3a" stroke-width="1"/>
+
+  <!-- ============================
+       SCREEN 1: Admin Dashboard
+       ============================ -->
+  <g id="screen-admin" clip-path="url(#screenClip)">
+    <!-- Header -->
+    <rect x="240" y="40" width="640" height="56" fill="#111118"/>
+    <rect x="240" y="95" width="640" height="1" fill="#2a2a3a"/>
+    <text x="268" y="74" class="sans white" font-size="18" font-weight="800">System Intelligence</text>
+    <text x="268" y="90" class="sans" fill="#4a4a6a" font-size="11">Real-time overview of the RestoPro ecosystem</text>
+
+    <!-- Stat Cards row -->
+    <!-- Card 1 -->
+    <rect x="258" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="275" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Total Fleet</text>
+    <text x="275" y="160" class="sans white" font-size="26" font-weight="800">4</text>
+    <text x="275" y="178" class="sans green" font-size="9">↑ 8.2% restaurants</text>
+
+    <!-- Card 2 -->
+    <rect x="404" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="421" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Network Revenue</text>
+    <text x="421" y="160" class="sans white" font-size="20" font-weight="800">₹1.64M</text>
+    <text x="421" y="178" class="sans green" font-size="9">↑ 12.5% combined</text>
+
+    <!-- Card 3 -->
+    <rect x="550" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="567" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Daily Flow</text>
+    <text x="567" y="160" class="sans white" font-size="26" font-weight="800">4,340</text>
+    <text x="567" y="178" class="sans green" font-size="9">↑ 5.1% orders today</text>
+
+    <!-- Card 4 -->
+    <rect x="696" y="110" width="160" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="713" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Avg Order</text>
+    <text x="713" y="160" class="sans white" font-size="26" font-weight="800">₹378</text>
+    <text x="713" y="178" class="sans green" font-size="9">↑ 3.1% per order</text>
+
+    <!-- Chart section -->
+    <rect x="258" y="202" width="400" height="230" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="278" y="224" class="sans white" font-size="13" font-weight="700">Monthly Revenue</text>
+
+    <!-- Bar chart bars -->
+    <rect x="290" y="390" width="28" height="40" rx="4" fill="url(#barGrad)" class="row1"/>
+    <rect x="334" y="370" width="28" height="60" rx="4" fill="url(#barGrad)" class="row2"/>
+    <rect x="378" y="355" width="28" height="75" rx="4" fill="url(#barGrad)" class="row1"/>
+    <rect x="422" y="330" width="28" height="100" rx="4" fill="url(#barGrad)" class="row2"/>
+    <rect x="466" y="310" width="28" height="120" rx="4" fill="url(#primaryGrad)" class="row3"/>
+    <rect x="510" y="345" width="28" height="85" rx="4" fill="url(#barGrad)" class="row4"/>
+    <text x="304" y="408" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">Sep</text>
+    <text x="348" y="408" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">Oct</text>
+    <text x="392" y="408" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">Nov</text>
+    <text x="436" y="408" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">Dec</text>
+    <text x="480" y="408" text-anchor="middle" class="sans primary-text" font-size="9" font-weight="700">Jan</text>
+    <text x="524" y="408" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">Feb</text>
+
+    <!-- Restaurants table -->
+    <rect x="670" y="202" width="186" height="230" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="690" y="224" class="sans white" font-size="13" font-weight="700">Restaurants</text>
+    <!-- rows -->
+    <rect x="680" y="232" width="166" height="1" fill="#2a2a3a"/>
+    <text x="685" y="250" class="sans white" font-size="10" font-weight="600">Downtown Bistro</text>
+    <text x="685" y="262" class="sans" fill="#4a4a6a" font-size="9">Mumbai · ₹4.5L</text>
+    <rect x="800" y="243" width="34" height="14" rx="6" fill="#10b981" fill-opacity="0.15"/>
+    <text x="817" y="253" text-anchor="middle" class="sans green" font-size="8" font-weight="700">active</text>
+
+    <rect x="680" y="270" width="166" height="1" fill="#2a2a3a"/>
+    <text x="685" y="288" class="sans white" font-size="10" font-weight="600">Coastal Kitchen</text>
+    <text x="685" y="300" class="sans" fill="#4a4a6a" font-size="9">Goa · ₹3.2L</text>
+    <rect x="800" y="281" width="34" height="14" rx="6" fill="#10b981" fill-opacity="0.15"/>
+    <text x="817" y="291" text-anchor="middle" class="sans green" font-size="8" font-weight="700">active</text>
+
+    <rect x="680" y="308" width="166" height="1" fill="#2a2a3a"/>
+    <text x="685" y="326" class="sans white" font-size="10" font-weight="600">Urban Cafe</text>
+    <text x="685" y="338" class="sans" fill="#4a4a6a" font-size="9">Bangalore · ₹5.8L</text>
+    <rect x="800" y="319" width="34" height="14" rx="6" fill="#10b981" fill-opacity="0.15"/>
+    <text x="817" y="329" text-anchor="middle" class="sans green" font-size="8" font-weight="700">active</text>
+
+    <rect x="680" y="346" width="166" height="1" fill="#2a2a3a"/>
+    <text x="685" y="364" class="sans white" font-size="10" font-weight="600">Mountain Grill</text>
+    <text x="685" y="376" class="sans" fill="#4a4a6a" font-size="9">Manali · ₹2.9L</text>
+    <rect x="796" y="357" width="42" height="14" rx="6" fill="#f59e0b" fill-opacity="0.15"/>
+    <text x="817" y="367" text-anchor="middle" class="sans amber" font-size="8" font-weight="700">inactive</text>
+
+    <!-- Role label -->
+    <rect x="555" y="28" width="60" height="20" rx="8" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="585" y="42" text-anchor="middle" class="sans primary-text" font-size="9" font-weight="800" letter-spacing="1">ADMIN</text>
+  </g>
+
+  <!-- ============================
+       SCREEN 2: Manager Dashboard
+       ============================ -->
+  <g id="screen-manager" clip-path="url(#screenClip)" style="opacity:0">
+    <rect x="240" y="40" width="640" height="56" fill="#111118"/>
+    <rect x="240" y="95" width="640" height="1" fill="#2a2a3a"/>
+    <text x="268" y="74" class="sans white" font-size="18" font-weight="800">Restaurant Pulse</text>
+    <text x="268" y="90" class="sans" fill="#4a4a6a" font-size="11">Welcome back, Manager · Here's what's happening</text>
+
+    <!-- Stats -->
+    <rect x="258" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="275" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Active Orders</text>
+    <text x="275" y="160" class="sans white" font-size="26" font-weight="800">8</text>
+    <text x="275" y="178" class="sans green" font-size="9">↑ 12% in kitchen</text>
+
+    <rect x="404" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="421" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Revenue</text>
+    <text x="421" y="160" class="sans white" font-size="20" font-weight="800">₹28,500</text>
+    <text x="421" y="178" class="sans green" font-size="9">↑ 15% today</text>
+
+    <rect x="550" y="110" width="136" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="567" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Capacity</text>
+    <text x="567" y="160" class="sans white" font-size="26" font-weight="800">6/10</text>
+    <text x="567" y="178" class="sans amber" font-size="9">Tables occupied</text>
+
+    <rect x="696" y="110" width="160" height="78" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="713" y="130" class="sans" fill="#6b7280" font-size="10" font-weight="600">Today Orders</text>
+    <text x="713" y="160" class="sans white" font-size="26" font-weight="800">45</text>
+    <text x="713" y="178" class="sans green" font-size="9">↑ 5% processed</text>
+
+    <!-- Orders Table -->
+    <rect x="258" y="202" width="598" height="230" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="278" y="224" class="sans white" font-size="13" font-weight="700">Recent Orders</text>
+    <rect x="258" y="232" width="598" height="1" fill="#2a2a3a"/>
+    <!-- Headers -->
+    <text x="278" y="248" class="sans" fill="#4a4a6a" font-size="10" font-weight="600">TABLE</text>
+    <text x="338" y="248" class="sans" fill="#4a4a6a" font-size="10" font-weight="600">ITEMS</text>
+    <text x="600" y="248" class="sans" fill="#4a4a6a" font-size="10" font-weight="600">AMOUNT</text>
+    <text x="690" y="248" class="sans" fill="#4a4a6a" font-size="10" font-weight="600">STATUS</text>
+    <rect x="258" y="253" width="598" height="1" fill="#2a2a3a"/>
+
+    <!-- Order rows -->
+    <text x="278" y="272" class="sans white" font-size="11">Table 3</text>
+    <text x="338" y="272" class="sans" fill="#9ca3af" font-size="11">Butter Chicken, Naan x2</text>
+    <text x="600" y="272" class="sans white" font-size="11">₹850</text>
+    <rect x="688" y="262" width="58" height="16" rx="6" fill="#f59e0b" fill-opacity="0.15"/>
+    <text x="717" y="273" text-anchor="middle" class="sans amber" font-size="9" font-weight="700">preparing</text>
+
+    <rect x="258" y="280" width="598" height="1" fill="#2a2a3a"/>
+    <text x="278" y="297" class="sans white" font-size="11">Table 7</text>
+    <text x="338" y="297" class="sans" fill="#9ca3af" font-size="11">Paneer Tikka, Dal Makhani</text>
+    <text x="600" y="297" class="sans white" font-size="11">₹720</text>
+    <rect x="688" y="287" width="48" height="16" rx="6" fill="#6366f1" fill-opacity="0.15"/>
+    <text x="712" y="298" text-anchor="middle" class="sans primary-text" font-size="9" font-weight="700">served</text>
+
+    <rect x="258" y="305" width="598" height="1" fill="#2a2a3a"/>
+    <text x="278" y="322" class="sans white" font-size="11">Table 5</text>
+    <text x="338" y="322" class="sans" fill="#9ca3af" font-size="11">Biryani, Raita</text>
+    <text x="600" y="322" class="sans white" font-size="11">₹450</text>
+    <rect x="688" y="312" width="58" height="16" rx="6" fill="#10b981" fill-opacity="0.15"/>
+    <text x="717" y="323" text-anchor="middle" class="sans green" font-size="9" font-weight="700">completed</text>
+
+    <rect x="258" y="330" width="598" height="1" fill="#2a2a3a"/>
+    <text x="278" y="347" class="sans white" font-size="11">Table 2</text>
+    <text x="338" y="347" class="sans" fill="#9ca3af" font-size="11">Chicken Tikka, Masala Tea</text>
+    <text x="600" y="347" class="sans white" font-size="11">₹380</text>
+    <rect x="688" y="337" width="58" height="16" rx="6" fill="#f59e0b" fill-opacity="0.15"/>
+    <text x="717" y="348" text-anchor="middle" class="sans amber" font-size="9" font-weight="700">preparing</text>
+
+    <rect x="555" y="28" width="70" height="20" rx="8" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="590" y="42" text-anchor="middle" class="sans blue" font-size="9" font-weight="800" letter-spacing="1">MANAGER</text>
+  </g>
+
+  <!-- ============================
+       SCREEN 3: Waiter View
+       ============================ -->  
+  <g id="screen-waiter" clip-path="url(#screenClip)" style="opacity:0">
+    <rect x="240" y="40" width="640" height="56" fill="#111118"/>
+    <rect x="240" y="95" width="640" height="1" fill="#2a2a3a"/>
+    <text x="268" y="74" class="sans white" font-size="18" font-weight="800">Table Management</text>
+    <text x="268" y="90" class="sans" fill="#4a4a6a" font-size="11">Select a table to take or manage orders</text>
+
+    <!-- Table grid -->
+    <g class="row1">
+      <!-- Row 1 tables -->
+      <rect x="258" y="110" width="108" height="90" rx="10" fill="#f43f5e" fill-opacity="0.1" stroke="#f43f5e" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="312" y="148" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T1</text>
+      <text x="312" y="165" text-anchor="middle" class="sans red" font-size="10" font-weight="600">Occupied</text>
+      <text x="312" y="178" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="378" y="110" width="108" height="90" rx="10" fill="#f43f5e" fill-opacity="0.1" stroke="#f43f5e" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="432" y="148" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T2</text>
+      <text x="432" y="165" text-anchor="middle" class="sans red" font-size="10" font-weight="600">Occupied</text>
+      <text x="432" y="178" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="498" y="110" width="108" height="90" rx="10" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="552" y="148" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T3</text>
+      <text x="552" y="165" text-anchor="middle" class="sans green" font-size="10" font-weight="600">Available</text>
+      <text x="552" y="178" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="618" y="110" width="108" height="90" rx="10" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="672" y="148" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T4</text>
+      <text x="672" y="165" text-anchor="middle" class="sans green" font-size="10" font-weight="600">Available</text>
+      <text x="672" y="178" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="738" y="110" width="118" height="90" rx="10" fill="#f59e0b" fill-opacity="0.1" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="797" y="148" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T5</text>
+      <text x="797" y="165" text-anchor="middle" class="sans amber" font-size="10" font-weight="600">Reserved</text>
+      <text x="797" y="178" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+    </g>
+
+    <g class="row2">
+      <rect x="258" y="215" width="108" height="90" rx="10" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="312" y="253" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T6</text>
+      <text x="312" y="270" text-anchor="middle" class="sans green" font-size="10" font-weight="600">Available</text>
+      <text x="312" y="283" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="378" y="215" width="108" height="90" rx="10" fill="#f43f5e" fill-opacity="0.1" stroke="#f43f5e" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="432" y="253" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T7</text>
+      <text x="432" y="270" text-anchor="middle" class="sans red" font-size="10" font-weight="600">Occupied</text>
+      <text x="432" y="283" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="498" y="215" width="108" height="90" rx="10" fill="#f59e0b" fill-opacity="0.1" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="552" y="253" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T8</text>
+      <text x="552" y="270" text-anchor="middle" class="sans amber" font-size="10" font-weight="600">Reserved</text>
+      <text x="552" y="283" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="618" y="215" width="108" height="90" rx="10" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="672" y="253" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T9</text>
+      <text x="672" y="270" text-anchor="middle" class="sans green" font-size="10" font-weight="600">Available</text>
+      <text x="672" y="283" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+
+      <rect x="738" y="215" width="118" height="90" rx="10" fill="#f43f5e" fill-opacity="0.1" stroke="#f43f5e" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="797" y="253" text-anchor="middle" class="sans white" font-size="20" font-weight="800">T10</text>
+      <text x="797" y="270" text-anchor="middle" class="sans red" font-size="10" font-weight="600">Occupied</text>
+      <text x="797" y="283" text-anchor="middle" class="sans" fill="#4a4a6a" font-size="9">4 seats</text>
+    </g>
+
+    <!-- Legend -->
+    <rect x="258" y="330" width="598" height="50" rx="10" fill="#16161f" stroke="#2a2a3a" stroke-width="1"/>
+    <circle cx="290" cy="355" r="6" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1"/>
+    <text x="302" y="359" class="sans green" font-size="11" font-weight="600">Available (4)</text>
+    <circle cx="400" cy="355" r="6" fill="#f43f5e" fill-opacity="0.3" stroke="#f43f5e" stroke-width="1"/>
+    <text x="412" y="359" class="sans red" font-size="11" font-weight="600">Occupied (4)</text>
+    <circle cx="510" cy="355" r="6" fill="#f59e0b" fill-opacity="0.3" stroke="#f59e0b" stroke-width="1"/>
+    <text x="522" y="359" class="sans amber" font-size="11" font-weight="600">Reserved (2)</text>
+
+    <rect x="548" y="28" width="56" height="20" rx="8" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="576" y="42" text-anchor="middle" class="sans green" font-size="9" font-weight="800" letter-spacing="1">WAITER</text>
+  </g>
+
+  <!-- ============================
+       SCREEN 4: Chef Kitchen
+       ============================ -->
+  <g id="screen-chef" clip-path="url(#screenClip)" style="opacity:0">
+    <rect x="240" y="40" width="640" height="56" fill="#111118"/>
+    <rect x="240" y="95" width="640" height="1" fill="#2a2a3a"/>
+    <text x="268" y="74" class="sans white" font-size="18" font-weight="800">Kitchen Display</text>
+    <text x="268" y="90" class="sans" fill="#4a4a6a" font-size="11">Live order queue · Auto-refreshes every 10 seconds</text>
+
+    <!-- Kanban columns -->
+    <!-- Pending column -->
+    <rect x="258" y="110" width="186" height="310" rx="10" fill="#16161f" stroke="#f59e0b" stroke-opacity="0.25" stroke-width="1"/>
+    <rect x="258" y="110" width="186" height="36" rx="10" fill="#f59e0b" fill-opacity="0.1"/>
+    <rect x="258" y="128" width="186" height="18" fill="#f59e0b" fill-opacity="0.1"/>
+    <text x="290" y="132" class="sans amber" font-size="11" font-weight="800" letter-spacing="1">PENDING</text>
+    <rect x="406" y="118" width="22" height="16" rx="6" fill="#f59e0b"/>
+    <text x="417" y="129" text-anchor="middle" class="sans" fill="#0a0a0f" font-size="10" font-weight="800">3</text>
+
+    <rect x="268" y="154" width="166" height="72" rx="8" fill="#1e1e2a" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="282" y="172" class="sans white" font-size="11" font-weight="700">Order #12 · T3</text>
+    <text x="282" y="186" class="sans" fill="#9ca3af" font-size="9">• Butter Chicken (full)</text>
+    <text x="282" y="198" class="sans" fill="#9ca3af" font-size="9">• Garlic Naan x2</text>
+    <text x="282" y="212" class="sans" fill="#4a4a6a" font-size="9">2 min ago</text>
+
+    <rect x="268" y="233" width="166" height="60" rx="8" fill="#1e1e2a" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="282" y="251" class="sans white" font-size="11" font-weight="700">Order #13 · T7</text>
+    <text x="282" y="265" class="sans" fill="#9ca3af" font-size="9">• Biryani (full) x2</text>
+    <text x="282" y="279" class="sans" fill="#4a4a6a" font-size="9">4 min ago</text>
+
+    <!-- Preparing column -->
+    <rect x="456" y="110" width="186" height="310" rx="10" fill="#16161f" stroke="#3b82f6" stroke-opacity="0.25" stroke-width="1"/>
+    <rect x="456" y="110" width="186" height="36" rx="10" fill="#3b82f6" fill-opacity="0.1"/>
+    <rect x="456" y="128" width="186" height="18" fill="#3b82f6" fill-opacity="0.1"/>
+    <text x="482" y="132" class="sans blue" font-size="11" font-weight="800" letter-spacing="1">PREPARING</text>
+    <rect x="600" y="118" width="22" height="16" rx="6" fill="#3b82f6"/>
+    <text x="611" y="129" text-anchor="middle" class="sans white" font-size="10" font-weight="800">2</text>
+
+    <rect x="466" y="154" width="166" height="72" rx="8" fill="#1e1e2a" stroke="#2a2a3a" stroke-width="1"/>
+    <text x="480" y="172" class="sans white" font-size="11" font-weight="700">Order #10 · T1</text>
+    <text x="480" y="186" class="sans" fill="#9ca3af" font-size="9">• Paneer Tikka (half)</text>
+    <text x="480" y="198" class="sans" fill="#9ca3af" font-size="9">• Dal Makhani</text>
+    <text x="480" y="212" class="sans" fill="#4a4a6a" font-size="9">8 min ago</text>
+
+    <!-- Ready column -->
+    <rect x="654" y="110" width="178" height="310" rx="10" fill="#16161f" stroke="#10b981" stroke-opacity="0.25" stroke-width="1"/>
+    <rect x="654" y="110" width="178" height="36" rx="10" fill="#10b981" fill-opacity="0.1"/>
+    <rect x="654" y="128" width="178" height="18" fill="#10b981" fill-opacity="0.1"/>
+    <text x="680" y="132" class="sans green" font-size="11" font-weight="800" letter-spacing="1">READY</text>
+    <rect x="796" y="118" width="22" height="16" rx="6" fill="#10b981"/>
+    <text x="807" y="129" text-anchor="middle" class="sans" fill="#0a0a0f" font-size="10" font-weight="800">1</text>
+
+    <rect x="664" y="154" width="158" height="60" rx="8" fill="#1e1e2a" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="678" y="172" class="sans white" font-size="11" font-weight="700">Order #9 · T5</text>
+    <text x="678" y="186" class="sans green" font-size="9">• Chicken Tikka ✓</text>
+    <text x="678" y="200" class="sans" fill="#4a4a6a" font-size="9">Ready to serve!</text>
+    <!-- Blink badge -->
+    <rect x="664" y="218" width="158" height="20" rx="6" fill="#10b981" fill-opacity="0.15" class="blink"/>
+    <text x="743" y="231" text-anchor="middle" class="sans green" font-size="9" font-weight="700">Notify Waiter →</text>
+
+    <rect x="548" y="28" width="44" height="20" rx="8" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="570" y="42" text-anchor="middle" class="sans amber" font-size="9" font-weight="800" letter-spacing="1">CHEF</text>
+  </g>
+
+  <!-- ===== Bottom bar ===== -->
+  <rect x="240" y="448" width="640" height="32" rx="0" fill="#0d0d14"/>
+  <rect x="240" y="448" width="640" height="1" fill="#2a2a3a"/>
+  <circle cx="644" cy="464" r="4" fill="#10b981"/>
+  <text x="654" y="468" class="sans green" font-size="10" font-weight="600">Server Online · Port 4000</text>
+  <text x="750" y="468" class="sans" fill="#4a4a6a" font-size="10">Next.js 16 · MySQL · Express</text>
+  <text x="845" y="468" class="sans primary-text" font-size="10" font-weight="600">RestoPro</text>
+</svg>

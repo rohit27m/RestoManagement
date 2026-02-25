@@ -1,24 +1,166 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: 0 0% 100%;
+  --foreground: 224 71.4% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71.4% 4.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71.4% 4.1%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 20% 98%;
+  --secondary: 220 14.3% 95.9%;
+  --secondary-foreground: 220.9 39.3% 11%;
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  --accent: 262.1 83.3% 57.8%;
+  --accent-foreground: 220.9 39.3% 11%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 262.1 83.3% 57.8%;
+  --radius: 0.75rem;
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
+  --background: 224 71.4% 4.1%;
+  --foreground: 210 20% 98%;
+  --card: 224 71.4% 4.1%;
+  --card-foreground: 210 20% 98%;
+  --popover: 224 71.4% 4.1%;
+  --popover-foreground: 210 20% 98%;
+  --primary: 263.4 70% 50.4%;
+  --primary-foreground: 210 20% 98%;
+  --secondary: 215 27.9% 16.9%;
+  --secondary-foreground: 210 20% 98%;
+  --muted: 215 27.9% 16.9%;
+  --muted-foreground: 217.9 10.6% 64.9%;
+  --accent: 263.4 70% 50.4%;
+  --accent-foreground: 210 20% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 215 27.9% 16.9%;
+  --input: 215 27.9% 16.9%;
+  --ring: 263.4 70% 50.4%;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-outfit), sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .glass-card-dark {
+    @apply bg-black/40 backdrop-blur-lg border border-white/10 shadow-2xl;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition-all duration-300 active:scale-95 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground shadow-premium-primary hover:shadow-premium-primary-hover hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-success {
+    @apply bg-emerald-500 text-white shadow-premium-success hover:shadow-premium-success-hover hover:bg-emerald-600;
+  }
+
+  .btn-danger {
+    @apply bg-rose-500 text-white shadow-premium-danger hover:shadow-premium-danger-hover hover:bg-rose-600;
+  }
+}
+
+@layer utilities {
+  .animate-in {
+    animation: animate-in 0.5s ease-out forwards;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent font-bold;
+  }
+
+  .glow-border {
+    @apply relative after:absolute after:inset-[-1px] after:rounded-[inherit] after:bg-gradient-to-r after:from-purple-500 after:via-pink-500 after:to-blue-500 after:p-[1px] after:content-[''] after:-z-10;
+  }
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted/50 rounded-full hover:bg-muted font-bold;
+}
+
+/* Mesh Gradient Background */
+.mesh-bg {
+  background-color: hsla(224, 71%, 4%, 1);
+  background-image:
+    radial-gradient(at 0% 0%, hsla(263, 70%, 50%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(224, 71%, 4%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(263, 70%, 50%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(224, 71%, 4%, 0.1) 0px, transparent 50%);
+}
+
+.skeleton {
+  @apply bg-muted/20 relative overflow-hidden;
+}
+
+.skeleton::after {
+  @apply absolute inset-0;
+  content: "";
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  animation: skeleton-shimmer 2s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }

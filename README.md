@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🍽️ Restaurant Management System
+# 🍽️ RestoPro — Restaurant Management System
 
-### *Modern, Professional & Efficient with Complete Payment Processing*
+### *Premium SaaS Dashboard for Modern Restaurant Operations*
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -10,9 +10,18 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
 [![Stripe](https://img.shields.io/badge/Stripe-Payment-blueviolet?style=for-the-badge&logo=stripe)](https://stripe.com/)
 
-*A full-stack restaurant management solution with comprehensive payment processing*
+*A full-stack restaurant management solution with role-based dashboards, real-time order tracking, and complete payment processing*
 
 [🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [💳 Payments](#-payment-system) • [📖 Documentation](#-documentation)
+
+---
+
+<!-- Demo Banner — cycles through Admin → Manager → Waiter → Chef views every 4 seconds -->
+<img src="./public/demo-banner.svg" alt="RestoPro Demo — Admin, Manager, Waiter & Chef dashboards" width="100%"/>
+
+<br/>
+
+> **4 role-based dashboards** — each cycling through live data views. Built with Next.js 16, Express, MySQL & Tailwind CSS.
 
 ---
 

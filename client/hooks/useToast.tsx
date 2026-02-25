@@ -26,8 +26,8 @@ export function useToast() {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
-  const ToastContainer = useCallback(
-    () => (
+  const ToastContainer = () => {
+    return (
       <>
         {toasts.map((toast) => (
           <Toast
@@ -39,9 +39,8 @@ export function useToast() {
           />
         ))}
       </>
-    ),
-    [toasts, removeToast]
-  );
+    );
+  };
 
   return {
     toast: addToast,

@@ -1,141 +1,324 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('waiter');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+export default function HomePage() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-    try {
-      const response = await fetch('http://localhost:4000/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        
-        // Redirect based on role
-        if (data.role === 'waiter' || data.role === 'admin') {
-          router.push('/waiter');
-        } else if (data.role === 'chef') {
-          router.push('/chef');
-        }
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Invalid credentials');
-      }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const features = [
+    {
+      icon: '📊',
+      title: 'Real-time Analytics',
+      description: 'Track orders, revenue, and performance metrics in real-time with powerful dashboards.',
+    },
+    {
+      icon: '🍽️',
+      title: 'Smart Ordering',
+      description: 'Streamline order management from kitchen to table with intelligent routing.',
+    },
+    {
+      icon: '👥',
+      title: 'Team Management',
+      description: 'Manage staff roles, schedules, and permissions with granular control.',
+    },
+    {
+      icon: '💳',
+      title: 'Integrated Payments',
+      description: 'Accept payments seamlessly with built-in POS and invoice generation.',
+    },
+    {
+      icon: '📱',
+      title: 'Mobile Ready',
+      description: 'Access your restaurant from anywhere with responsive mobile design.',
+    },
+    {
+      icon: '🔒',
+      title: 'Enterprise Security',
+      description: 'Bank-level security with encrypted data and role-based access control.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-10 w-full max-w-md">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900 rounded-2xl mb-4">
-            <span className="text-4xl">🍽️</span>
-          </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Restaurant Management</h1>
-          <p className="text-slate-500 text-sm">Sign in to your account</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="username" className="block text-sm font-semibold text-slate-700 mb-2">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoFocus
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition bg-white"
-              placeholder="Enter username"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition bg-white"
-              placeholder="Enter password"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="role" className="block text-sm font-semibold text-slate-700 mb-2">
-              Login As
-            </label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition bg-white text-slate-900 font-medium"
-            >
-              <option value="waiter">Waiter</option>
-              <option value="chef">Chef</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
-
-          {error && (
-            <div className="text-red-700 text-center text-sm bg-red-50 border border-red-200 p-3 rounded-xl">
-              {error}
-            </div>
-          )}
-        </form>
-
-        <div className="mt-8 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-          <h3 className="font-semibold text-slate-900 mb-3 text-sm uppercase tracking-wide">Demo Credentials</h3>
-          <div className="text-sm text-slate-600 space-y-2">
-            <div className="flex justify-between">
-              <span className="font-medium text-slate-700">Waiter:</span>
-              <span className="font-mono text-xs">waiter1 / waiter123</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-slate-700">Chef:</span>
-              <span className="font-mono text-xs">chef1 / chef123</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-slate-700">Admin:</span>
-              <span className="font-mono text-xs">admin / admin123</span>
-            </div>
-          </div>
-        </div>
+    <>
+      {/* Global Cinematic Background */}
+      <div className="fixed inset-0 -z-10 bg-[#0a0a0a]">
+        {/* Radial gradient spotlight */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(40,40,40,0.4)_0%,transparent_60%)]" />
+        
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
+        
+        {/* Noise texture */}
+        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay"
+             style={{
+               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+             }}
+        />
+        
+        {/* Subtle moving light */}
+        <motion.div
+          className="absolute w-[800px] h-[800px] rounded-full opacity-20 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)',
+            left: mousePosition.x - 400,
+            top: mousePosition.y - 400,
+          }}
+          transition={{ type: 'spring', damping: 50, stiffness: 100 }}
+        />
       </div>
-    </div>
+
+      {/* Glass Navbar */}
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.6, 0.05, 0.1, 0.9] }}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-xl bg-black/20"
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="RestoTrack" className="h-8 w-auto" />
+            <span className="text-white font-bold text-xl">RestaurantOS</span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
+            <Link href="/login">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-green-600/20"
+              >
+                Sign In
+              </motion.button>
+            </Link>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div className="max-w-7xl mx-auto w-full">
+          <motion.div
+            style={{ opacity }}
+            className="text-center space-y-8"
+          >
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.6, 0.05, 0.1, 0.9] }}
+              className="space-y-4"
+            >
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1]"
+                  style={{ letterSpacing: '-0.03em' }}>
+                Restaurant<br />
+                Management
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                The all-in-one platform that helps restaurants operate smarter,
+                serve faster, and grow revenue.
+              </p>
+            </motion.div>
+
+            {/* Video Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.6, 0.05, 0.1, 0.9] }}
+              className="relative max-w-5xl mx-auto"
+            >
+              {/* Glow effect behind video */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-green-600/20 to-green-600/20 blur-3xl opacity-50" />
+              
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-auto"
+                >
+                  <source src="/landing-video.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6, ease: [0.6, 0.05, 0.1, 0.9] }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+              <Link href="/login">
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(34,197,94,0.3)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group relative px-8 py-4 bg-green-600 text-white rounded-xl font-semibold text-lg overflow-hidden shadow-xl shadow-green-600/20"
+                >
+                  <span className="relative z-10">Get Started Free</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </motion.button>
+              </Link>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 border-2 border-white/20 text-white rounded-xl font-semibold text-lg hover:border-white/40 hover:bg-white/5 transition-all"
+              >
+                Watch Demo
+              </motion.button>
+            </motion.div>
+
+            {/* Developer Credit */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="pt-8"
+            >
+              <p className="text-gray-400 text-xl font-semibold">
+                Developed By <span className="text-white font-bold text-2xl">Rohit Munamarthi</span>
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-2"
+          >
+            <motion.div className="w-1.5 h-3 bg-white/40 rounded-full" />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="relative py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+              Everything you need
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Powerful features designed for modern restaurants
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="group relative p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all cursor-pointer"
+              >
+                {/* Subtle glow on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-600/0 to-green-600/0 group-hover:from-green-600/5 group-hover:to-transparent transition-all" />
+                
+                <div className="relative">
+                  <div className="text-5xl mb-6">{feature.icon}</div>
+                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white leading-tight" style={{ letterSpacing: '-0.02em' }}>
+              Ready to transform<br />your restaurant?
+            </h2>
+            
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Join hundreds of restaurants already using RestaurantOS
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <Link href="/login">
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(34,197,94,0.3)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-lg shadow-2xl shadow-green-600/20 transition-all"
+                >
+                  Start Free Trial
+                </motion.button>
+              </Link>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-5 border-2 border-white/20 text-white rounded-xl font-bold text-lg hover:border-white/40 hover:bg-white/5 transition-all"
+              >
+                Schedule Demo
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative border-t border-white/5 py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="RestoTrack" className="h-8 w-auto" />
+              <span className="text-white font-bold">RestaurantOS</span>
+            </div>
+            
+            <div className="flex gap-8 text-sm text-gray-400">
+              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+          
+          <div className="mt-8 pt-8 border-t border-white/5 text-center text-sm text-gray-500">
+            <p>© 2026 RestaurantOS. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }
