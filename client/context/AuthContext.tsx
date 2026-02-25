@@ -56,9 +56,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('Login response status:', response.status);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Login failed' }));
-        console.error('Login failed:', errorData);
-        throw new Error(errorData.error || 'Login failed');
+        let errorMessage = 'Login failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData?.error || errorData?.message || `Server error (${response.status})`;
+        } catch {
+          errorMessage = `Server error (${response.status})`;
+        }
+        console.error('Login failed:', response.status, errorMessage);
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -85,8 +91,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else if (data.role === 'chef') {
         router.push('/chef');
       }
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('fetch') || msg.includes('network') || msg.includes('NetworkError')) {
+        throw new Error('Cannot reach server. Please ensure the backend is running on port 4000.');
+      }
       throw error;
     }
   };

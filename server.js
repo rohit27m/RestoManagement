@@ -156,7 +156,7 @@ app.post('/api/login', async (req, res) => {
     res.json(response);
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message || String(error) || 'Internal server error' });
   }
 });
 

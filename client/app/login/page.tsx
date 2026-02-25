@@ -5,11 +5,73 @@ import { useAuth } from '@/context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 
+const DEMO_ACCOUNTS = [
+  {
+    role: 'Admin',
+    username: 'admin',
+    password: 'admin123',
+    description: 'Full system access',
+    color: 'from-violet-500/20 to-purple-500/10',
+    border: 'border-violet-500/30',
+    badge: 'bg-violet-500/20 text-violet-300',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/>
+        <path d="m16 13 2 2 4-4"/>
+      </svg>
+    ),
+  },
+  {
+    role: 'Manager',
+    username: 'manager',
+    password: 'manager123',
+    description: 'Restaurant operations',
+    color: 'from-blue-500/20 to-cyan-500/10',
+    border: 'border-blue-500/30',
+    badge: 'bg-blue-500/20 text-blue-300',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/>
+      </svg>
+    ),
+  },
+  {
+    role: 'Waiter',
+    username: 'waiter1',
+    password: 'waiter123',
+    description: 'Tables & order taking',
+    color: 'from-emerald-500/20 to-green-500/10',
+    border: 'border-emerald-500/30',
+    badge: 'bg-emerald-500/20 text-emerald-300',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+      </svg>
+    ),
+  },
+  {
+    role: 'Chef',
+    username: 'chef1',
+    password: 'chef123',
+    description: 'Kitchen & orders view',
+    color: 'from-orange-500/20 to-amber-500/10',
+    border: 'border-orange-500/30',
+    badge: 'bg-orange-500/20 text-orange-300',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 7.05C14.19 12.78 13 15 12 17"/><path d="M9 18h6"/><path d="M10 22h4"/>
+      </svg>
+    ),
+  },
+];
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [demoLoadingRole, setDemoLoadingRole] = useState<string | null>(null);
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,9 +89,18 @@ export default function LoginPage() {
     }
   };
 
-  const handleQuickLogin = (u: string, p: string) => {
+  const handleDemoLogin = async (u: string, p: string, role: string) => {
     setUsername(u);
     setPassword(p);
+    setError('');
+    setDemoLoadingRole(role);
+    try {
+      await login(u, p);
+    } catch (err) {
+      setError('Demo login failed. Please ensure the server is running.');
+    } finally {
+      setDemoLoadingRole(null);
+    }
   };
 
   return (
@@ -141,25 +212,57 @@ export default function LoginPage() {
                   <span className="w-full border-t border-white/10"></span>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="px-4 bg-transparent text-white/30 backdrop-blur font-bold tracking-widest">Nodes</span>
+                  <span className="px-4 bg-transparent text-white/30 backdrop-blur font-bold tracking-widest">Demo Accounts</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  onClick={() => handleQuickLogin('admin', 'admin123')}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 hover:bg-white/10 transition-all group"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black group-hover:scale-110 transition-transform">A</div>
-                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest group-hover:text-white/60">Admin</div>
-                </button>
-                <button
-                  onClick={() => handleQuickLogin('manager', 'manager123')}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 hover:bg-white/10 transition-all group"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black group-hover:scale-110 transition-transform">M</div>
-                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest group-hover:text-white/60">Manager</div>
-                </button>
+              <div className="grid grid-cols-2 gap-3">
+                {DEMO_ACCOUNTS.map((account, i) => (
+                  <motion.button
+                    key={account.role}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * i }}
+                    onClick={() => handleDemoLogin(account.username, account.password, account.role)}
+                    disabled={!!demoLoadingRole || isLoading}
+                    className={`relative flex flex-col items-start gap-2.5 p-4 rounded-xl bg-gradient-to-br ${account.color} border ${account.border} hover:brightness-110 transition-all group text-left disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden`}
+                  >
+                    {/* Loading overlay */}
+                    {demoLoadingRole === account.role && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-xl z-10"
+                      >
+                        <svg className="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                        </svg>
+                      </motion.div>
+                    )}
+
+                    {/* Header row */}
+                    <div className="flex items-center justify-between w-full">
+                      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${account.badge}`}>
+                        {account.icon}
+                        {account.role}
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/30 group-hover:text-white/60 group-hover:translate-x-0.5 transition-all">
+                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                      </svg>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-[11px] text-white/50 font-medium leading-snug">{account.description}</p>
+
+                    {/* Credentials */}
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="text-[10px] font-mono text-white/30 bg-white/5 px-1.5 py-0.5 rounded">{account.username}</span>
+                      <span className="text-[10px] text-white/20">·</span>
+                      <span className="text-[10px] font-mono text-white/30 bg-white/5 px-1.5 py-0.5 rounded">{account.password}</span>
+                    </div>
+                  </motion.button>
+                ))}
               </div>
             </CardContent>
           </Card>
