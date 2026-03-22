@@ -8,8 +8,8 @@ import { formatDate } from '@/lib/utils';
 interface InvoiceItem {
   id: string;
   name: string;
-  quantity: number;
-  price: number;
+  quantity: number | string;
+  price: number | string;
   amount: number;
 }
 
@@ -20,8 +20,8 @@ export function InvoiceGenerator() {
   const [items, setItems] = useState<InvoiceItem[]>([
     { id: '1', name: '', quantity: 1, price: 0, amount: 0 }
   ]);
-  const [taxRate, setTaxRate] = useState(5);
-  const [tip, setTip] = useState(0);
+  const [taxRate, setTaxRate] = useState<number | string>(5);
+  const [tip, setTip] = useState<number | string>(0);
   const [paymentMethod, setPaymentMethod] = useState('Cash');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -38,7 +38,9 @@ export function InvoiceGenerator() {
       if (item.id === id) {
         const updated = { ...item, [field]: value };
         if (field === 'quantity' || field === 'price') {
-          updated.amount = updated.quantity * updated.price;
+          const qty = parseFloat(updated.quantity.toString()) || 0;
+          const prc = parseFloat(updated.price.toString()) || 0;
+          updated.amount = qty * prc;
         }
         return updated;
       }
@@ -47,8 +49,10 @@ export function InvoiceGenerator() {
   };
 
   const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
-  const tax = subtotal * (taxRate / 100);
-  const total = subtotal + tax + tip;
+  const numericTaxRate = parseFloat(taxRate.toString()) || 0;
+  const numericTip = parseFloat(tip.toString()) || 0;
+  const tax = subtotal * (numericTaxRate / 100);
+  const total = subtotal + tax + numericTip;
 
   const handleGeneratePDF = () => {
     const data: InvoiceData = {
@@ -59,10 +63,14 @@ export function InvoiceGenerator() {
       restaurantPhone: '+91 98765 43210',
       customerName: customerName || undefined,
       tableNumber: tableNumber ? parseInt(tableNumber) : undefined,
-      items: items.filter(item => item.name && item.quantity > 0),
+      items: items.filter(item => item.name && (parseFloat(item.quantity.toString()) || 0) > 0).map(item => ({
+        ...item,
+        quantity: parseFloat(item.quantity.toString()) || 0,
+        price: parseFloat(item.price.toString()) || 0
+      })),
       subtotal,
       tax,
-      tip,
+      tip: numericTip,
       total,
       paymentMethod,
     };
@@ -79,10 +87,14 @@ export function InvoiceGenerator() {
       restaurantPhone: '+91 98765 43210',
       customerName: customerName || undefined,
       tableNumber: tableNumber ? parseInt(tableNumber) : undefined,
-      items: items.filter(item => item.name && item.quantity > 0),
+      items: items.filter(item => item.name && (parseFloat(item.quantity.toString()) || 0) > 0).map(item => ({
+        ...item,
+        quantity: parseFloat(item.quantity.toString()) || 0,
+        price: parseFloat(item.price.toString()) || 0
+      })),
       subtotal,
       tax,
-      tip,
+      tip: numericTip,
       total,
       paymentMethod,
     };
@@ -143,7 +155,7 @@ export function InvoiceGenerator() {
                       type="number"
                       placeholder="Qty"
                       value={item.quantity}
-                      onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
+                      onChange={(e) => updateItem(item.id, 'quantity', e.target.value === '' ? '' : (parseFloat(e.target.value) || 0))}
                     />
                   </div>
                   <div className="col-span-3">
@@ -151,7 +163,7 @@ export function InvoiceGenerator() {
                       type="number"
                       placeholder="Price"
                       value={item.price}
-                      onChange={(e) => updateItem(item.id, 'price', parseFloat(e.target.value) || 0)}
+                      onChange={(e) => updateItem(item.id, 'price', e.target.value === '' ? '' : (parseFloat(e.target.value) || 0))}
                     />
                   </div>
                   <div className="col-span-2 flex items-center">
@@ -176,13 +188,13 @@ export function InvoiceGenerator() {
                 label="Tax Rate (%)"
                 type="number"
                 value={taxRate}
-                onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setTaxRate(e.target.value === '' ? '' : (parseFloat(e.target.value) || 0))}
               />
               <Input
                 label="Tip (₹)"
                 type="number"
                 value={tip}
-                onChange={(e) => setTip(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setTip(e.target.value === '' ? '' : (parseFloat(e.target.value) || 0))}
               />
             </div>
 
@@ -209,10 +221,10 @@ export function InvoiceGenerator() {
                 <span className="text-gray-400">Tax ({taxRate}%):</span>
                 <span>₹{tax.toFixed(2)}</span>
               </div>
-              {tip > 0 && (
+              {numericTip > 0 && (
                 <div className="flex justify-between">
                   <span className="text-gray-400">Tip:</span>
-                  <span>₹{tip.toFixed(2)}</span>
+                  <span>₹{numericTip.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-800">

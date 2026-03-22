@@ -65,8 +65,8 @@ export function generateInvoicePDF(data: InvoiceData): void {
     body: data.items.map(item => [
       item.name,
       item.quantity.toString(),
-      `₹${item.price.toFixed(2)}`,
-      `₹${item.amount.toFixed(2)}`
+      `Rs. ${item.price.toFixed(2)}`,
+      `Rs. ${item.amount.toFixed(2)}`
     ]),
     theme: 'grid',
     headStyles: {
@@ -95,16 +95,16 @@ export function generateInvoicePDF(data: InvoiceData): void {
   
   doc.setFontSize(10);
   doc.text('Subtotal:', labelX, currentY);
-  doc.text(`₹${data.subtotal.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.subtotal.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   
   currentY += 7;
   doc.text(`Tax (${((data.tax / data.subtotal) * 100).toFixed(0)}%):`, labelX, currentY);
-  doc.text(`₹${data.tax.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.tax.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   
   if (data.tip && data.tip > 0) {
     currentY += 7;
     doc.text('Tip:', labelX, currentY);
-    doc.text(`₹${data.tip.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+    doc.text(`Rs. ${data.tip.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   }
   
   // Total with background
@@ -116,7 +116,7 @@ export function generateInvoicePDF(data: InvoiceData): void {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.text('TOTAL:', labelX, currentY);
-  doc.text(`₹${data.total.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.total.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   
   // Payment Method
   doc.setTextColor(0, 0, 0);
@@ -176,8 +176,8 @@ export function previewInvoice(data: InvoiceData): string {
     body: data.items.map(item => [
       item.name,
       item.quantity.toString(),
-      `₹${item.price.toFixed(2)}`,
-      `₹${item.amount.toFixed(2)}`
+      `Rs. ${item.price.toFixed(2)}`,
+      `Rs. ${item.amount.toFixed(2)}`
     ]),
     theme: 'grid',
     headStyles: {
@@ -203,15 +203,15 @@ export function previewInvoice(data: InvoiceData): string {
   
   doc.setFontSize(10);
   doc.text('Subtotal:', labelX, currentY);
-  doc.text(`₹${data.subtotal.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.subtotal.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   currentY += 7;
   doc.text(`Tax (${((data.tax / data.subtotal) * 100).toFixed(0)}%):`, labelX, currentY);
-  doc.text(`₹${data.tax.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.tax.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   
   if (data.tip && data.tip > 0) {
     currentY += 7;
     doc.text('Tip:', labelX, currentY);
-    doc.text(`₹${data.tip.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+    doc.text(`Rs. ${data.tip.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   }
   
   currentY += 10;
@@ -221,7 +221,7 @@ export function previewInvoice(data: InvoiceData): string {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.text('TOTAL:', labelX, currentY);
-  doc.text(`₹${data.total.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
+  doc.text(`Rs. ${data.total.toFixed(2)}`, rightAlign, currentY, { align: 'right' });
   
   doc.setTextColor(0, 0, 0);
   doc.setFont('helvetica', 'normal');
