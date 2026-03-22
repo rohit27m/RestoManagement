@@ -6,10 +6,9 @@ import { useAuth } from '@/context/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: Array<'admin' | 'manager' | 'waiter' | 'chef'>;
 }
 
-export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
@@ -17,11 +16,9 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     if (!isLoading) {
       if (!user) {
         router.push('/login');
-      } else if (allowedRoles && !allowedRoles.includes(user.role)) {
-        router.push('/unauthorized');
       }
     }
-  }, [user, isLoading, allowedRoles, router]);
+  }, [user, isLoading, router]);
 
   if (isLoading) {
     return (
@@ -31,7 +28,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {
+  if (!user) {
     return null;
   }
 

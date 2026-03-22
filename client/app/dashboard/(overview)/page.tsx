@@ -45,8 +45,8 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <DashboardLayout role="admin">
+    <ProtectedRoute >
+      <DashboardLayout >
         <div className="space-y-8">
           {/* Welcome Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

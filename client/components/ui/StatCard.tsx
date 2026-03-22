@@ -1,10 +1,10 @@
 'use client';
 
-import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { ReactNode, useEffect, useState } from 'react';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
+interface StatCardProps extends HTMLMotionProps<"div"> {
   title: string;
   value: string | number;
   subtitle?: string;

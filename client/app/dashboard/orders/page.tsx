@@ -41,8 +41,8 @@ export default function OrdersPage() {
   const filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter);
 
   return (
-    <ProtectedRoute allowedRoles={['manager', 'admin']}>
-      <DashboardLayout role="manager">
+    <ProtectedRoute >
+      <DashboardLayout >
         <div className="p-8 space-y-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

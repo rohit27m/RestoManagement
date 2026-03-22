@@ -77,8 +77,8 @@ export default function TablesPage() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['manager', 'admin']}>
-      <DashboardLayout role="manager">
+    <ProtectedRoute >
+      <DashboardLayout >
         <Header
           title="Table Management"
           subtitle="Manage restaurant tables and seating"

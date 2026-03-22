@@ -5,13 +5,12 @@ import { Sidebar } from './Sidebar';
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  role: 'admin' | 'manager';
 }
 
-const DashboardLayout = ({ children, role }: DashboardLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      <Sidebar role={role} />
+    <div className="flex h-screen mesh-bg text-foreground relative overflow-hidden">
+      <Sidebar />
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>

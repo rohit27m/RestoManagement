@@ -12,8 +12,8 @@ export default function MenuManagementPage() {
   const [activeTab, setActiveTab] = useState<'list' | 'upload'>('list');
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'manager']}>
-      <DashboardLayout role="manager">
+    <ProtectedRoute >
+      <DashboardLayout >
         <div className="space-y-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

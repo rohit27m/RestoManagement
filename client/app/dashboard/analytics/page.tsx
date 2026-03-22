@@ -25,8 +25,8 @@ const mockTopRestaurants = [
 
 export default function AdminAnalyticsPage() {
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <DashboardLayout role="admin">
+    <ProtectedRoute >
+      <DashboardLayout >
         <div className="p-8 space-y-8">
           {/* Header */}
           <div>

@@ -81,16 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
       localStorage.setItem('auth', JSON.stringify(userData));
 
-      // Redirect based on role
-      if (data.role === 'admin') {
-        router.push('/admin');
-      } else if (data.role === 'manager') {
-        router.push('/manager');
-      } else if (data.role === 'waiter') {
-        router.push('/waiter');
-      } else if (data.role === 'chef') {
-        router.push('/chef');
-      }
+      // Redirect to unified dashboard
+      router.push('/dashboard');
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : String(error);
       if (msg.includes('fetch') || msg.includes('network') || msg.includes('NetworkError')) {

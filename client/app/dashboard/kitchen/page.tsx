@@ -1,8 +1,8 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import ThemeToggle from '../components/ThemeToggle';
+import { DashboardLayout } from '@/components/layout';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
 interface User {
   id: number;
@@ -47,13 +47,8 @@ export default function ChefDashboard() {
       });
       if (response.ok) {
         const userData = await response.json();
-        if (userData.role !== 'chef') {
-          alert('Access denied. Chef login required.');
-          router.push('/');
-        } else {
-          setUser(userData);
-          loadOrders();
-        }
+        setUser(userData);
+        loadOrders();
       } else {
         router.push('/');
       }
@@ -161,44 +156,21 @@ export default function ChefDashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
-      </div>
+      <ProtectedRoute>
+        <DashboardLayout>
+          <div className="min-h-full flex items-center justify-center">
+            <div className="text-lg">Loading...</div>
+          </div>
+        </DashboardLayout>
+      </ProtectedRoute>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/logo.png" 
-              alt="RestoTrack Logo" 
-              className="h-10 w-auto"
-            />
-            <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Chef Dashboard</h1>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Kitchen order management</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{user.username}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user.role}</p>
-            </div>
-            <ThemeToggle />
-            <button
-              onClick={logout}
-              className="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-xl transition border border-slate-200 dark:border-slate-600"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <ProtectedRoute>
+      <DashboardLayout>
+        <div className="min-h-full bg-slate-50 dark:bg-slate-900">
+      
       {/* Orders Layout */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -282,5 +254,7 @@ export default function ChefDashboard() {
         </div>
       </div>
     </div>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 }

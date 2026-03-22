@@ -7,8 +7,8 @@ import { InvoiceGenerator } from '@/components/invoice/InvoiceGenerator';
 
 export default function AdminInvoicesPage() {
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <DashboardLayout role="admin">
+    <ProtectedRoute >
+      <DashboardLayout >
         <Header
           title="Invoice Generator"
           subtitle="Create and download professional invoices"
